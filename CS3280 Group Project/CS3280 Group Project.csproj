@@ -55,17 +55,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
+    <Compile Include="Items\clsItemsLogic.cs" />
+    <Compile Include="Items\clsItemsSQL.cs" />
+    <Compile Include="Items\wndItems.xaml.cs">
+      <DependentUpon>wndItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\clsMainLogic.cs" />
+    <Compile Include="Main\clsMainSQL.cs" />
+    <Compile Include="Main\wndMain.xaml.cs">
+      <DependentUpon>wndMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Search\clsSearchLogic.cs" />
+    <Compile Include="Search\clsSearchSQL.cs" />
+    <Compile Include="Search\wndSearch.xaml.cs">
+      <DependentUpon>wndSearch.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +100,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Items\wndItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main\wndMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Search\wndSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
