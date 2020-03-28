@@ -31,9 +31,10 @@ namespace CS3280_Group_Project.Search
         clsSearchSQL searchSQL = new clsSearchSQL();
 
         /// <summary>
-        /// Used for passing invoice selected back to main
+        /// Used for passing invoiceID selected back to main
         /// </summary>
-        public string invoiceID { get; set; }
+        string invoiceID;
+            
         #endregion
 
         #region Constructor
@@ -42,10 +43,11 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         public wndSearch()
         {
+            invoiceID = "none";
             InitializeComponent();
             PopulateDropdowns();
             PopulateDataGrid();
-            invoiceID = "none";
+
         }
         #endregion
 
@@ -68,7 +70,11 @@ namespace CS3280_Group_Project.Search
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectButton_Click(object sender, RoutedEventArgs e) {
-            invoiceID = "5001";
+            // invoiceID is set based on the selected cell in the gridrow
+            // this window is set as a class member in the main window to allow access to invoiceID
+            invoiceID = InvoiceDataGrid.SelectedCells[0].ToString();
+            this.Close();
+            
         }
         #endregion
 
