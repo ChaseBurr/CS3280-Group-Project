@@ -5,8 +5,67 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280_Group_Project.Items"
         mc:Ignorable="d"
-        Title="wndItems" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="wndItems" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing" Background="#FFECECEC">
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Width="auto" Background="#FF71777C">
+            <Button x:Name="btnAddItem" Margin="10,75,10,25" Width="100" Height="50" Content="Add Item" Click="btnAddItem_Click" />
+            <Button x:Name="btnEditItem" Margin="10,25" Width="100" Height="50" Content="Edit Item" Click="btnEditItem_Click" />
+            <Button x:Name="btnDeleteItem" Margin="10,25" Width="100" Height="50" Content="Delete Item" Click="btnDeleteItem_Click" />
+        </StackPanel>
+        <Label x:Name="lblMainMessage" Margin="25,25,25,0" HorizontalContentAlignment="Center" DockPanel.Dock="Top" Content="Unable to delete Item. Item exists on the following invoices:" Height="76" FontSize="18" />
+        <StackPanel Orientation="Horizontal" Margin="0,-26,0,0">
+            <ListView Margin="20,25" Width="231" SelectionChanged="ListView_SelectionChanged" >
+                <ListBoxItem Content="A"/>
+                <ListBoxItem Content="B"/>
+                <ListBoxItem Content="C"/>
+                <ListBoxItem Content="D"/>
+                <ListBoxItem Content="E"/>
+                <ListBoxItem Content="F"/>
+                <ListBoxItem Content="G"/>
+                <ListBoxItem Content="H"/>
+                <ListBoxItem Content="I"/>
+                <ListBoxItem Content="J"/>
+                <ListBoxItem Content="K"/>
+                <ListBoxItem Content="L"/>
+                <ListBoxItem Content="M"/>
+                <ListBoxItem Content="N"/>
+                <ListBoxItem Content="O"/>
+                <ListBoxItem Content="P"/>
+                <ListBoxItem Content="Q"/>
+                <ListBoxItem Content="R"/>
+                <ListBoxItem Content="S"/>
+                <ListBoxItem Content="T"/>
+                <ListBoxItem Content="U"/>
+                <ListBoxItem Content="V"/>
+                <ListBoxItem Content="W"/>
+                <ListBoxItem Content="X"/>
+                <ListBoxItem Content="Y"/>
+                <ListBoxItem Content="X"/>
+            </ListView>
+            <GroupBox Margin="20,25" x:Name="gbAddEditDelDisplay" Width="346" Background="White">
+                <Canvas>
+                    <Label x:Name="lblAddEditDelItem" Content="Add / Edit / Delete Item" Canvas.Left="71" Canvas.Top="5" FontWeight="ExtraBold" FontSize="16"/>
+                    <Separator Height="16" Margin="0" Canvas.Top="33" Width="334"/>
+                    <Label x:Name="lblItemCode" Content="Name:" Canvas.Left="75" Canvas.Top="58"/>
+                    <Label x:Name="lblItemCost" Content="Cost:" Canvas.Left="83" Canvas.Top="112"/>
+                    <Label x:Name="lblItemDescription" Content="Description:" Canvas.Left="46" Canvas.Top="169"/>
+                    <TextBox x:Name="txtbItemName" Height="23" Canvas.Left="158" TextWrapping="Wrap" Text="" Canvas.Top="60" Width="120"/>
+                    <TextBox x:Name="txtbItemCost" Height="23" Canvas.Left="158" TextWrapping="Wrap" Text="" Canvas.Top="114" Width="120" RenderTransformOrigin="0.505,1.071"/>
+                    <TextBox x:Name="txtbItemDescription" Height="23" Canvas.Left="158" TextWrapping="Wrap" Text="" Canvas.Top="170" Width="120" RenderTransformOrigin="0.474,4.894"/>
+                    <Label x:Name="lblMessage" HorizontalContentAlignment="Center" Content="Message will only display on events" Canvas.Left="26" Canvas.Top="223" Height="49" Width="276"/>
+                    <Separator Height="16" Margin="0" Canvas.Top="204" Width="334"/>
+
+
+                </Canvas>
+            </GroupBox>
+        </StackPanel>
+        <!--<DataGrid x:Name="dgItemsList" HorizontalAlignment="Left" Height="312" Margin="25,0,0,25" VerticalAlignment="Bottom" Width="513">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Code" Width="*"/>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cost" Width="*"/>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Description" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>-->
+    </DockPanel>
 </Window>
