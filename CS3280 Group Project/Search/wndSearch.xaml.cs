@@ -24,16 +24,32 @@ namespace CS3280_Group_Project.Search
     public partial class wndSearch : Window
     {
 
+        #region Class Variables
+        /// <summary>
+        /// Connection to database
+        /// </summary>
         clsSearchSQL searchSQL = new clsSearchSQL();
-        public string invoiceID { get; set; }
 
+        /// <summary>
+        /// Used for passing invoice selected back to main
+        /// </summary>
+        public string invoiceID { get; set; }
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Constructor for wndSearch
+        /// </summary>
         public wndSearch()
         {
             InitializeComponent();
             PopulateDropdowns();
             PopulateDataGrid();
+            invoiceID = "none";
         }
+        #endregion
 
+        #region Button Handlers
         /// <summary>
         /// Clear selections in dropdown
         /// </summary>
@@ -54,9 +70,11 @@ namespace CS3280_Group_Project.Search
         private void SelectButton_Click(object sender, RoutedEventArgs e) {
             invoiceID = "5001";
         }
+        #endregion
 
+        #region PopulateUIElements
         /// <summary>
-        /// 
+        /// Populate dropdowns based on info queried in clsMainSQL.cs
         /// </summary>
         private void PopulateDropdowns() {
             foreach (string invoiceNum in searchSQL.GetInvoiceNumbers()) {
@@ -70,21 +88,14 @@ namespace CS3280_Group_Project.Search
             }
         }
 
+        /// <summary>
+        /// Populate datagrid based on info queried in clsMainSQL.cs
+        /// </summary>
         private void PopulateDataGrid() {
             InvoiceDataGrid.AutoGenerateColumns = true;
             InvoiceDataGrid.DataContext = searchSQL.GetDataSet().Tables[0].DefaultView;
         }
+        #endregion
 
-        /*
-        private void MenuItem_Click(object sender, RoutedEventArgs e) {
-            if ((sender as MenuItem).Header.ToString() == "Items" &&) {
-                wndItems window = new wndItems();
-                window.Show();
-            } else if ((sender as MenuItem).Header.ToString() == "Search") {
-                wndSearch window = new wndSearch();
-                window.Show();
-            }
-        }
-        */
     }
 }

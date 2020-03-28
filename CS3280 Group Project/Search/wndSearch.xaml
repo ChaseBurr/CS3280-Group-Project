@@ -21,12 +21,6 @@
         <DataGrid x:Name="InvoiceDataGrid" Margin="233,58,28,31.5" ItemsSource="{Binding}" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="80" SelectionMode="Single" IsReadOnly="True" FontSize="16"/>
         <Label Content="Search Invoices" HorizontalAlignment="Left" Margin="7,10,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
         <Rectangle Fill="Black" HorizontalAlignment="Left" Height="2" Margin="195,34,0,0" Stroke="Black" VerticalAlignment="Top" Width="587"/>
-        <!-- 
-        <Menu HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="795">
-            <MenuItem Header="Items" FontWeight="Bold" FontSize="16" Click="MenuItem_Click"/>
-            <MenuItem Header="Search" FontWeight="Bold" FontSize="16" Click="MenuItem_Click"/>
-        </Menu>
-        -->
 
     </Grid>
 </Window>
