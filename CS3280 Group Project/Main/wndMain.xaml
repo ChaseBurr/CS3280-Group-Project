@@ -8,38 +8,43 @@
         Title="Invoice System" Height="450" Width="800">
     <Grid HorizontalAlignment="Left" Width="792">
         <Grid.Background>
-            <SolidColorBrush Color="gray" />
+            <SolidColorBrush Color="#FF71777C" />
         </Grid.Background>
 
-        <Grid x:Name="MainMenuGrid" Visibility="Hidden">
-            <Button x:Name="SearchInvoiceButton" Content="Search for Invoice" Background="white" FontSize="15" Margin="253,83,276,284" Click="SearchForInvoice" />
-            <Button x:Name="AddInvoiceButton" Content="Add Invoice" Background="white" FontSize="15" Margin="253,152,276,215" Click="AddInvoice" />
-            <Button x:Name="EditInvoiceButton" Content="Edit Invoice" Background="white" FontSize="15" Margin="253,224,276,143" Click="EditInvoice" IsEnabled="False" />
-            <Button x:Name="DeleteInvoiceButton" Content="Delete Invoice" Background="white" FontSize="15" Margin="253,296,276,71" Click="DeleteInvoice" IsEnabled="False" />
+        <DockPanel Margin="0,0,0,390">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Click="SearchForInvoice" Header="Search" />
+                <MenuItem Click="UpdateItems" Header="Update Items" />
+            </Menu>
+        </DockPanel>
+
+        <Grid x:Name="MainMenuGrid" Visibility="Visible">
+            <Button x:Name="AddInvoiceOption"    Click="AddInvoice"       Content="Add Invoice" Background="white" FontSize="15" Margin="253,109,276,258"  />
+            <Button x:Name="EditInvoiceOption"   Click="EditInvoice"      Content="Edit Invoice" Background="white" FontSize="15" Margin="253,181,276,186"  IsEnabled="False" />
+            <Button x:Name="DeleteInvoiceOption" Click="DeleteInvoice"    Content="Delete Invoice" Background="white" FontSize="15" Margin="253,253,276,114"  IsEnabled="False" />
         </Grid>
 
-        <Grid x:Name="AddInvoiceGrid">
-            <Button Content="Save Invoice" Background="white" HorizontalAlignment="Left" Margin="533,293,0,0" VerticalAlignment="Top" Width="95" Height="22"/>
-            <Button Content="Add Invoice" Background="white" HorizontalAlignment="Left" Margin="144,137,0,0" VerticalAlignment="Top" Width="128" Height="34"/>
-            <Button Content="Edit Invoice" Background="white" HorizontalAlignment="Left" Margin="144,178,0,0" VerticalAlignment="Top" Width="128" Height="34"/>
-            <Button Content="Remove Invoice" Background="white" HorizontalAlignment="Left" Margin="144,219,0,0" VerticalAlignment="Top" Width="128" Height="34"/>
+        <Grid x:Name="InvoiceGrid" Visibility="Hidden">
+            <Button x:Name="SaveInvoiceButton"  Click="SaveInvoiceClick"   Content="Save Invoice" Background="white" HorizontalAlignment="Left" Margin="533,282,0,0" VerticalAlignment="Top" Width="95" Height="22" IsEnabled="False"/>
+            <Button x:Name="AddInvoiceButton"   Click="AddInvoiceClick"    Content="Add Invoice" Background="white" HorizontalAlignment="Left" Margin="144,137,0,0" VerticalAlignment="Top" Width="128" Height="34" IsEnabled="False"/>
+            <Button x:Name="EditInvoiceButton"  Click="EditInvoiceClick"   Content="Edit Invoice" Background="white" HorizontalAlignment="Left" Margin="144,178,0,0" VerticalAlignment="Top" Width="128" Height="34" IsEnabled="False"/>
+            <Button x:Name="RemoveInvoieButton" Click="RemoveInvoiceClick" Content="Remove Invoice" Background="white" HorizontalAlignment="Left" Margin="144,219,0,0" VerticalAlignment="Top" Width="128" Height="34" IsEnabled="False"/>
 
-            <Label Content="Invoice # 000" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="302,63,0,0" VerticalAlignment="Top"/>
-            <Label Content="Date: MM/DD/YYYY" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="443,63,0,0" VerticalAlignment="Top"/>
-            <ListBox HorizontalAlignment="Left" Height="172" Margin="302,105,0,0" VerticalAlignment="Top" Width="326"/>
-            <ComboBox HorizontalAlignment="Left" Margin="302,282,0,0" VerticalAlignment="Top" Width="141"/>
+            <Label   x:Name="InvoiceNumberLabel" Content="Invoice # TBD" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="302,63,0,0" VerticalAlignment="Top"/>
+            <Label   x:Name="InvoiceDateLabel"   Content="Date: MM/DD/YYYY" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="443,63,0,0" VerticalAlignment="Top"/>
+
+            <ComboBox x:Name="ItemListComboBox" HorizontalAlignment="Left" Margin="302,282,0,0" VerticalAlignment="Top" Width="141" SelectionChanged="ItemSelectionChange"/>
             <Label Content="Quantity:" Foreground="white" HorizontalAlignment="Left" Margin="352,306,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.223,0.354"/>
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="415,309,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="28"/>
-            <Label Content="Total: $0" Foreground="white" HorizontalAlignment="Left" Margin="352,332,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="UserEnteredQuantity" HorizontalAlignment="Left" Height="23" Margin="415,309,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="28" TextInput="QuantityInput"/>
+            <TextBox x:Name="TotalCostTextBox" HorizontalAlignment="Left" Height="23" Margin="323,337,0,0" TextWrapping="Wrap" Text="Total: " VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+            <DataGrid x:Name="ItemListGrid" HorizontalAlignment="Left" Height="172" Margin="302,105,0,0" VerticalAlignment="Top" Width="326"/>
+            <Button x:Name="AddItemButton" Click="AddItemToGrid" Content="Add Item" Background="white" HorizontalAlignment="Left" Margin="368,365,0,0" VerticalAlignment="Top" Width="75"/>
 
 
 
         </Grid>
 
-        <!--<Grid x:Name="EditInvoiceGrid">
-            
-        </Grid>
-
+        <!--
         <Grid x:Name="DeleteInvoiceGrid">
             
         </Grid>

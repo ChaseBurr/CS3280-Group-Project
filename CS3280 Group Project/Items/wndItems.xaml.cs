@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -34,6 +35,11 @@ namespace CS3280_Group_Project.Items
         private bool bItemListUpdated;
 
         /// <summary>
+        /// object instance of the items logic class
+        /// </summary>
+        private clsItemsLogic itemsLogic;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public wndItems()
@@ -41,6 +47,7 @@ namespace CS3280_Group_Project.Items
             try
             {
                 InitializeComponent();
+                itemsLogic = new clsItemsLogic();
                 bItemListUpdated = false;
             }
             catch (Exception ex)
@@ -59,8 +66,28 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
+                // TODO: pass in the data
+                string sItemCode = txtbItemName.Text;
+                string sItemDesc = txtbItemDescription.Text;
+
+                // TODO: tryparse on text string from txtbItemCost.Text
+                int iCost = 0;
+
                 // TODO: calls business logic of clsItemsLogic.cs
                     // Logic needs to validate Item id does not exist already
+                if (itemsLogic.Add(sItemCode, sItemDesc, iCost))
+                {
+                    bItemListUpdated = true;
+                    lblMessage.Content = $"{sItemCode} Added with Description: {sItemDesc}, Code: {iCost}";
+
+                    // update items list
+                    lstItems.ItemsSource = itemsLogic.Items();
+                }
+                else
+                {
+                    bItemListUpdated = false;
+                    lblMessage.Content = $"Error adding {sItemCode}";
+                }
             }
             catch (Exception ex)
             {
@@ -78,9 +105,28 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
+                // TODO: pass in the item code from the selection
+                string sItemCode = txtbItemName.Text;
+
                 // TODO: calls business logic of clsItemsLogic.cs. 
-                    // Logic should not allow deletion if the item exists in an invoice
-                    // Display error if error in deletion
+                // Logic should not allow deletion if the item exists in an invoice
+                // Display error if error in deletion
+                if (itemsLogic.Delete(sItemCode))
+                {
+                    bItemListUpdated = true;
+                    lblMessage.Content = $"{sItemCode} Deleted from Items";
+
+                    // update items list
+                    lstItems.ItemsSource = itemsLogic.Items();
+                }
+                else
+                {
+                    bItemListUpdated = false;
+                    lblMessage.Content = $"Error deleting {sItemCode} from Items";
+
+                    // TODO: list the invoices the item is on from the itemsLogic.dsItemOnInvoices
+                    lblMainMessage.Content = $"{sItemCode} Exists in the following invoices: .......";
+                }
             }
             catch (Exception ex)
             {
@@ -98,9 +144,29 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
+                // TODO: pass in the data
+                string sItemCode = txtbItemName.Text;
+                string sItemDesc = txtbItemDescription.Text;
+
+                // TODO: tryparse on text string from txtbItemCost.Text
+                int iCost = 0;
+
                 // TODO: calls business logic of clsItemsLogic.cs
-                    // Logic should not allow edit of the code.
-                    // Only allows edit of the description and cost.
+                // Logic should not allow edit of the code.
+                // Only allows edit of the description and cost.
+                if (itemsLogic.Update(sItemCode, sItemDesc, iCost))
+                {
+                    bItemListUpdated = true;
+                    lblMessage.Content = $"{sItemCode} updated Description: {sItemDesc}, Cost: {iCost}";
+                    
+                    // update items list
+                    lstItems.ItemsSource = itemsLogic.Items();
+                }
+                else
+                {
+                    bItemListUpdated = false;
+                    lblMessage.Content = $"Error updating {sItemCode}";
+                }
             }
             catch (Exception ex)
             {
@@ -130,6 +196,10 @@ namespace CS3280_Group_Project.Items
             try
             {
                 // TODO: populate the Add/ Edit / Delete form window
+                DataRow drSelectedItem =  (DataRow) e.Source;
+                txtbItemName.Text = drSelectedItem[0].ToString();
+                txtbItemDescription.Text = drSelectedItem[1].ToString();
+                txtbItemCost.Text = drSelectedItem[2].ToString();
             }
             catch (Exception ex)
             {
@@ -165,7 +235,11 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
+                // Initialize variables
                 bItemListUpdated = false;
+
+                // update items list
+                lstItems.ItemsSource = itemsLogic.Items();
             }
             catch (Exception ex)
             {
