@@ -191,15 +191,15 @@ namespace CS3280_Group_Project.Items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void lstItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 // TODO: populate the Add/ Edit / Delete form window
-                DataRow drSelectedItem =  (DataRow) e.Source;
-                txtbItemName.Text = drSelectedItem[0].ToString();
-                txtbItemDescription.Text = drSelectedItem[1].ToString();
-                txtbItemCost.Text = drSelectedItem[2].ToString();
+                clsItem Item = (clsItem) lstItems.SelectedItem;
+                txtbItemName.Text = Item.sItemName;
+                txtbItemDescription.Text = Item.sItemDesc;
+                txtbItemCost.Text = Item.iItemCost.ToString();
             }
             catch (Exception ex)
             {
@@ -240,12 +240,13 @@ namespace CS3280_Group_Project.Items
 
                 // update items list
                 lstItems.ItemsSource = itemsLogic.Items();
+
             }
             catch (Exception ex)
             {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
-        }        
+        }
     }
 }

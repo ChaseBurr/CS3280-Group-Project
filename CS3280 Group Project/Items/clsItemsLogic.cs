@@ -41,13 +41,14 @@ namespace CS3280_Group_Project.Items
         /// Select all items from database
         /// </summary>
         /// <returns>all items</returns>
-        public List<DataRow> Items()
+        //public List<DataRow> Items()
+        public List<clsItem> Items()
         {
             try
             {
                 // Initialize variablse
                 int iRetVal = 0;
-                List<DataRow> lstItems = new List<DataRow>();
+                List<clsItem> lstItems = new List<clsItem>();
 
                 // SQL query string
                 string sSQLQuery = clsItemsSQL.SelectAllItems();
@@ -55,13 +56,25 @@ namespace CS3280_Group_Project.Items
                 // query the database
                 dsItems = db.ExecuteSQLStatement(sSQLQuery, ref iRetVal);
 
-                // loop through dataset and append to list
+                // temp variables
+                string sName;
+                string sDescription;
+                int iCost;
+                bool bNumValid;
+
                 foreach (DataRow drRow in dsItems.Tables[0].Rows)
                 {
-                    lstItems.Add(drRow);
+                    sName = drRow.ItemArray[0].ToString();
+                    sDescription = drRow.ItemArray[1].ToString();
+                    iCost = 0;
+                    bNumValid = Int32.TryParse( drRow.ItemArray[2].ToString(), out iCost);
+
+                    if (bNumValid)
+                    {
+                        lstItems.Add(new clsItem { sItemName = sName, sItemDesc = sDescription, iItemCost = iCost });
+                    }
                 }
 
-                // return list
                 return lstItems;
             }
             catch (Exception ex)

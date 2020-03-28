@@ -24,7 +24,7 @@ namespace CS3280_Group_Project.Items
             try
             {
                 // Define the SQL statement
-                string sSQL = "INSERT INTO ItemDesc (ItemCode, ItemDesc, Cost)" +
+                string sSQL = "INSERT INTO ItemDesc (ItemCode, ItemDesc, Cost) " +
                                 $"VALUES('{sItemCode}', '{sItemDesc}', {iCost})";
 
                 // returns the SQL statement
@@ -48,7 +48,7 @@ namespace CS3280_Group_Project.Items
             {
                 // Define the SQL statement
                 string sSQL = "DELETE " +
-                                "FROM ItemDesc" +
+                                "FROM ItemDesc " +
                                 $"WHERE ItemCode = '{sItemCode}'";
 
                 // returns the SQL statement
@@ -71,8 +71,8 @@ namespace CS3280_Group_Project.Items
             try
             {
                 // Define the SQL statment
-                string sSQL = "SELECT DISTINCT InvoiceNum" +
-                                "FROM LineItems" +
+                string sSQL = "SELECT DISTINCT InvoiceNum " +
+                                "FROM LineItems " +
                                 $"WHERE ItemCode = '{sItemCode}'";
 
                 // returns the SQL statement
@@ -94,7 +94,7 @@ namespace CS3280_Group_Project.Items
             try
             {
                 // Define the SQL statement
-                string sSQL = "SELECT ItemCode, ItemDesc, Cost" +
+                string sSQL = "SELECT ItemCode, ItemDesc, Cost " +
                                 "FROM ItemDesc";
 
                 // returns the SQL statement
