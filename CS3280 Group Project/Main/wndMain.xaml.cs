@@ -14,9 +14,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace CS3280_Group_Project.Items
 {
+    
     /// <summary>
     /// Interaction logic for wndMain.xaml
     /// </summary>
@@ -26,6 +28,12 @@ namespace CS3280_Group_Project.Items
         /// Object that holds all the logic behind the main window ui
         /// </summary>
         private clsMainLogic Logic;
+
+        /// <summary>
+        /// Holds search window for getting selected invoiceID
+        /// </summary>
+        private wndSearch search;
+
         public wndMain()
         {
             try
@@ -48,7 +56,7 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                wndSearch search = new wndSearch();
+                search = new wndSearch();
                 App.Current.MainWindow = search;
                 search.Show();
 
