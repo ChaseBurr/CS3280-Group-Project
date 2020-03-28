@@ -6,7 +6,27 @@
         xmlns:local="clr-namespace:CS3280_Group_Project.Search"
         mc:Ignorable="d"
         Title="wndSearch" Height="450" Width="800">
+
     <Grid>
-        
+        <Button Content="Clear Selection" HorizontalAlignment="Left" Margin="35,267,0,0" VerticalAlignment="Top" Width="155" Height="42" FontSize="16" FontWeight="Bold" Click="ClearButton_Click"/>
+        <Button Content="Select Invoice" HorizontalAlignment="Left" Margin="35,332,0,0" VerticalAlignment="Top" Width="155" Height="42" FontSize="16" FontWeight="Bold" Click="SelectButton_Click"/>
+        <StackPanel HorizontalAlignment="Left" Height="217" Margin="35,58,0,0" VerticalAlignment="Top" Width="167">
+            <Label Content="Invoice Number" HorizontalAlignment="Left" Margin="0,0,-46,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
+            <ComboBox x:Name="InvoiceNumber" VerticalAlignment="Top" Height="27" HorizontalAlignment="Left" Width="157"/>
+            <Label Content="Invoice Date" HorizontalAlignment="Left" Margin="0,0,-16,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
+            <ComboBox x:Name="InvoiceDate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="27"/>
+            <Label Content="Invoice Charge" HorizontalAlignment="Left" Margin="0,0,-36,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
+            <ComboBox x:Name="InvoiceCharge" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="27"/>
+        </StackPanel>
+        <DataGrid x:Name="InvoiceDataGrid" Margin="233,58,28,31.5" ItemsSource="{Binding}" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="80" SelectionMode="Single" IsReadOnly="True" FontSize="16"/>
+        <Label Content="Search Invoices" HorizontalAlignment="Left" Margin="7,10,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+        <Rectangle Fill="Black" HorizontalAlignment="Left" Height="2" Margin="195,34,0,0" Stroke="Black" VerticalAlignment="Top" Width="587"/>
+        <!-- 
+        <Menu HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="795">
+            <MenuItem Header="Items" FontWeight="Bold" FontSize="16" Click="MenuItem_Click"/>
+            <MenuItem Header="Search" FontWeight="Bold" FontSize="16" Click="MenuItem_Click"/>
+        </Menu>
+        -->
+
     </Grid>
 </Window>
