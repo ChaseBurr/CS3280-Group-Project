@@ -9,13 +9,13 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Width="auto" Background="#FF71777C">
-            <Button x:Name="btnAddItem" Margin="10,75,10,25" Width="100" Height="50" Content="Add Item" Click="btnAddItem_Click" />
-            <Button x:Name="btnEditItem" Margin="10,25" Width="100" Height="50" Content="Edit Item" Click="btnEditItem_Click" />
-            <Button x:Name="btnDeleteItem" Margin="10,25" Width="100" Height="50" Content="Delete Item" Click="btnDeleteItem_Click" />
+            <Button x:Name="btnAddItem" Margin="25,75,25,25" Width="100" Height="50" Content="Add Item" Click="btnAddItem_Click" />
+            <Button x:Name="btnEditItem" Margin="25,25" Width="100" Height="50" Content="Edit Item" Click="btnEditItem_Click" />
+            <Button x:Name="btnDeleteItem" Margin="25,25" Width="100" Height="50" Content="Delete Item" Click="btnDeleteItem_Click" />
         </StackPanel>
-        <Label x:Name="lblMainMessage" Margin="25,25,25,0" HorizontalContentAlignment="Center" DockPanel.Dock="Top" Content="Unable to delete Item. Item exists on the following invoices:" Height="76" FontSize="18" />
+        <Label x:Name="lblMainMessage" Margin="25,25,25,0" HorizontalContentAlignment="Center" DockPanel.Dock="Top" Content="Add, Edit, or Delete Items Interface" Height="76" FontSize="18" />
         <StackPanel Orientation="Horizontal" Margin="0,-26,0,0">
-            <ListView Margin="20,25" Width="231" SelectionChanged="ListView_SelectionChanged" >
+            <ListView x:Name="lstItems" Margin="20,25" Width="171" SelectionChanged="ListView_SelectionChanged" >
                 <ListBoxItem Content="A"/>
                 <ListBoxItem Content="B"/>
                 <ListBoxItem Content="C"/>

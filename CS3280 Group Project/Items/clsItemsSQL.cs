@@ -66,14 +66,14 @@ namespace CS3280_Group_Project.Items
         /// </summary>
         /// <param name="iItemCode">ItemCode value in the database</param>
         /// <returns>Invoice number for item code</returns>
-        public static string ItemInvoiceNum(int iItemCode)
+        public static string ItemInvoiceNum(string sItemCode)
         {
             try
             {
                 // Define the SQL statment
                 string sSQL = "SELECT DISTINCT InvoiceNum" +
                                 "FROM LineItems" +
-                                $"WHERE ItemCode = '{iItemCode}'";
+                                $"WHERE ItemCode = '{sItemCode}'";
 
                 // returns the SQL statement
                 return sSQL;
