@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,8 +38,16 @@ namespace CS3280_Group_Project.Items
         /// </summary>
         public wndItems()
         {
-            InitializeComponent();
-            bItemListUpdated = false;
+            try
+            {
+                InitializeComponent();
+                bItemListUpdated = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -48,8 +57,16 @@ namespace CS3280_Group_Project.Items
         /// <param name="e"></param>
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: calls business logic of clsItemsLogic.cs
-                // Logic needs to validate Item id does not exist already
+            try
+            {
+                // TODO: calls business logic of clsItemsLogic.cs
+                    // Logic needs to validate Item id does not exist already
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -59,9 +76,17 @@ namespace CS3280_Group_Project.Items
         /// <param name="e"></param>
         private void btnDeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: calls business logic of clsItemsLogic.cs. 
-                // Logic should not allow deletion if the item exists in an invoice
-                // Display error if error in deletion
+            try
+            {
+                // TODO: calls business logic of clsItemsLogic.cs. 
+                    // Logic should not allow deletion if the item exists in an invoice
+                    // Display error if error in deletion
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -71,9 +96,28 @@ namespace CS3280_Group_Project.Items
         /// <param name="e"></param>
         private void btnEditItem_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: calls business logic of clsItemsLogic.cs
-                // Logic should not allow edit of the code.
-                // Only allows edit of the description and cost.
+            try
+            {
+                // TODO: calls business logic of clsItemsLogic.cs
+                    // Logic should not allow edit of the code.
+                    // Only allows edit of the description and cost.
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Shows user the exception
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
         }
 
         /// <summary>
@@ -83,7 +127,15 @@ namespace CS3280_Group_Project.Items
         /// <param name="e"></param>
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // TODO: populate the Add/ Edit / Delete form window
+            try
+            {
+                // TODO: populate the Add/ Edit / Delete form window
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -93,7 +145,15 @@ namespace CS3280_Group_Project.Items
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // TODO: handle any notifications (if needed) back to main window
+            try
+            {
+                // TODO: handle any notifications (if needed) back to main window
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -103,7 +163,15 @@ namespace CS3280_Group_Project.Items
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            bItemListUpdated = false;
+            try
+            {
+                bItemListUpdated = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }        
     }
 }
