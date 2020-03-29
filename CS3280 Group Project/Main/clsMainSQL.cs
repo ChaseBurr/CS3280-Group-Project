@@ -10,9 +10,18 @@ namespace CS3280_Group_Project.Main
 {
     class clsMainSQL
     {
+        /// <summary>
+        /// database connection
+        /// </summary>
         clsDataAccess db;
+        /// <summary>
+        /// dataset object
+        /// </summary>
         DataSet ds;
 
+        /// <summary>
+        /// Main constructor
+        /// </summary>
         public clsMainSQL()
         {
             db = new clsDataAccess();
