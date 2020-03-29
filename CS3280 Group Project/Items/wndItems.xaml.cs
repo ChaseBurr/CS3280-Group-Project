@@ -196,10 +196,13 @@ namespace CS3280_Group_Project.Items
             try
             {
                 // TODO: populate the Add/ Edit / Delete form window
-                clsItem Item = (clsItem) lstItems.SelectedItem;
-                txtbItemName.Text = Item.sItemName;
-                txtbItemDescription.Text = Item.sItemDesc;
-                txtbItemCost.Text = Item.iItemCost.ToString();
+                if (lstItems.SelectedItem != null)
+                {
+                    clsItem Item = (clsItem)lstItems.SelectedItem;
+                    txtbItemName.Text = Item.sItemName;
+                    txtbItemDescription.Text = Item.sItemDesc;
+                    txtbItemCost.Text = Item.iItemCost.ToString();
+                }
             }
             catch (Exception ex)
             {
