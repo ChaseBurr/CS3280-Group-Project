@@ -12,11 +12,11 @@
         <Button Content="Select Invoice" HorizontalAlignment="Left" Margin="35,332,0,0" VerticalAlignment="Top" Width="155" Height="42" FontSize="16" FontWeight="Bold" Click="SelectButton_Click"/>
         <StackPanel HorizontalAlignment="Left" Height="217" Margin="35,58,0,0" VerticalAlignment="Top" Width="167">
             <Label Content="Invoice Number" HorizontalAlignment="Left" Margin="0,0,-46,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
-            <ComboBox x:Name="InvoiceNumber" VerticalAlignment="Top" Height="27" HorizontalAlignment="Left" Width="157"/>
+            <ComboBox x:Name="InvoiceNumber" VerticalAlignment="Top" Height="27" HorizontalAlignment="Left" Width="157" SelectionChanged="InvoiceInfo_SelectionChanged"/>
             <Label Content="Invoice Date" HorizontalAlignment="Left" Margin="0,0,-16,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
-            <ComboBox x:Name="InvoiceDate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="27"/>
+            <ComboBox x:Name="InvoiceDate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="27" SelectionChanged="InvoiceInfo_SelectionChanged"/>
             <Label Content="Invoice Charge" HorizontalAlignment="Left" Margin="0,0,-36,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
-            <ComboBox x:Name="InvoiceCharge" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="27"/>
+            <ComboBox x:Name="InvoiceCharge" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="27" SelectionChanged="InvoiceInfo_SelectionChanged"/>
         </StackPanel>
         <DataGrid x:Name="InvoiceDataGrid" Margin="233,58,28,31.5" ItemsSource="{Binding}" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="80" SelectionMode="Single" IsReadOnly="True" FontSize="16"/>
         <Label Content="Search Invoices" HorizontalAlignment="Left" Margin="7,10,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>

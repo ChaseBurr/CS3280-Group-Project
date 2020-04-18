@@ -12,24 +12,14 @@ namespace CS3280_Group_Project.Search
 
         #region Class Variables
         /// <summary>
-        /// Dataset containing all invoices
+        /// Dataset containing invoices from query
         /// </summary>
         DataSet dataSet;
-        
-        /// <summary>
-        /// List of invoice numbers
-        /// </summary>
-        List<string> invoiceNumbers = new List<string>();
 
         /// <summary>
-        /// List of invoice dates
+        /// Access to DB
         /// </summary>
-        List<string> invoiceDates = new List<string>();
-
-        /// <summary>
-        /// List of invoice costs
-        /// </summary>
-        List<string> invoiceCosts = new List<string>();
+        clsDataAccess dataAccess;
         #endregion
 
         #region Constructor
@@ -38,35 +28,64 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         public clsSearchSQL() {
             // access to data
-            int numInvoices = 0;
-            clsDataAccess dataAccess = new clsDataAccess();
-            dataSet = dataAccess.ExecuteSQLStatement("SELECT * FROM Invoices", ref numInvoices);
-
-            // store lists to populate displays
-            DataTable table = dataSet.Tables[0];
-            foreach (DataRow row in table.Rows) {
-                invoiceNumbers.Add(row.ItemArray[0].ToString());
-                invoiceDates.Add(row.ItemArray[1].ToString());
-                invoiceCosts.Add(row.ItemArray[2].ToString());
-            }
-
+            dataAccess = new clsDataAccess();
         }
         #endregion
 
-        #region Getters
-        public List<string> GetInvoiceNumbers() {
-            return invoiceNumbers;
+        #region Combobox Datasets
+        /// <summary>
+        /// Gets sorted dataset of invoice costs
+        /// </summary>
+        /// <returns></returns>
+        public DataSet GetSortedCosts() {
+            int numInvoices = 0;
+            // get ordered costs
+            dataSet = dataAccess.ExecuteSQLStatement("SELECT TotalCost FROM Invoices ORDER BY TotalCost", ref numInvoices);
+            return dataSet;
         }
 
-        public List<string> GetInvoiceDates() {
-            return invoiceDates;
+        /// <summary>
+        /// Gets sorted dataset of invoice dates
+        /// </summary>
+        /// <returns></returns>
+        public DataSet GetSortedDates() {
+            int numInvoices = 0;
+            // get ordered dates
+            dataSet = dataAccess.ExecuteSQLStatement("SELECT InvoiceDate FROM Invoices ORDER BY InvoiceDate", ref numInvoices);
+            return dataSet;
         }
 
-        public List<string> GetInvoiceCosts() {
-            return invoiceCosts;
+        /// <summary>
+        /// Gets sorted dataset of invoice numbers
+        /// </summary>
+        /// <returns></returns>
+        public DataSet GetSortedInvoiceNums() {
+            int numInvoices = 0;
+            // get ordered invoice numbers
+            dataSet = dataAccess.ExecuteSQLStatement("SELECT InvoiceNum FROM Invoices ORDER BY InvoiceNum", ref numInvoices);
+            return dataSet;
+        }
+        #endregion
+
+        #region Get Invoice List
+        /// <summary>
+        /// Gets dataset of all invoices
+        /// </summary>
+        /// <returns></returns>
+        public DataSet GetFullInvoiceList() {
+            int numInvoices = 0;
+            dataSet = dataAccess.ExecuteSQLStatement("SELECT * FROM Invoices", ref numInvoices);
+            return dataSet;
         }
 
-        public DataSet GetDataSet() {
+        /// <summary>
+        /// Gets dataset of invoices based on query
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public DataSet GetLimitedInvoiceList(string query) {
+            int numInvoices = 0; ;
+            dataSet = dataAccess.ExecuteSQLStatement(query, ref numInvoices);
             return dataSet;
         }
         #endregion

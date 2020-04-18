@@ -25,15 +25,11 @@ namespace CS3280_Group_Project.Search
     {
 
         #region Class Variables
-        /// <summary>
-        /// Connection to database
-        /// </summary>
-        clsSearchSQL searchSQL = new clsSearchSQL();
 
         /// <summary>
-        /// Used for passing invoiceID selected back to main
+        /// Logic for search window
         /// </summary>
-        string invoiceID;
+        clsSearchLogic logic = new clsSearchLogic();
             
         #endregion
 
@@ -43,7 +39,6 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         public wndSearch()
         {
-            invoiceID = "none";
             InitializeComponent();
             PopulateDropdowns();
             PopulateDataGrid();
@@ -72,8 +67,10 @@ namespace CS3280_Group_Project.Search
         private void SelectButton_Click(object sender, RoutedEventArgs e) {
             // invoiceID is set based on the selected cell in the gridrow
             // this window is set as a class member in the main window to allow access to invoiceID
-            invoiceID = InvoiceDataGrid.SelectedCells[0].ToString();
-            this.Close();
+            if (InvoiceDataGrid.SelectedItem != null) {
+                logic.setInvoiceID(InvoiceDataGrid.SelectedCells[0].ToString());
+                this.Close();
+            }
             
         }
         #endregion
@@ -83,25 +80,36 @@ namespace CS3280_Group_Project.Search
         /// Populate dropdowns based on info queried in clsMainSQL.cs
         /// </summary>
         private void PopulateDropdowns() {
-            foreach (string invoiceNum in searchSQL.GetInvoiceNumbers()) {
-                InvoiceNumber.Items.Add(invoiceNum);
-            }
-            foreach (string invoiceDate in searchSQL.GetInvoiceDates()) {
-                InvoiceDate.Items.Add(invoiceDate.Substring(0, 9));
-            }
-            foreach (string invoiceCost in searchSQL.GetInvoiceCosts()) {
-                InvoiceCharge.Items.Add("$" + invoiceCost);
-            }
+            InvoiceNumber.ItemsSource = logic.invoiceNumbers;
+            InvoiceDate.ItemsSource = logic.invoiceDates;
+            InvoiceCharge.ItemsSource = logic.invoiceCosts;
         }
 
         /// <summary>
         /// Populate datagrid based on info queried in clsMainSQL.cs
         /// </summary>
         private void PopulateDataGrid() {
+            // get selections and pass to query builder in logic
+            string invoiceNum = InvoiceNumber.SelectedItem as string;
+            string invoiceDate = InvoiceDate.SelectedItem as string;
+            string invoiceCharge = InvoiceCharge.SelectedItem as string;
+            logic.BuildQueryFromSelections(invoiceNum, invoiceDate, invoiceCharge);
+            // update data grid
             InvoiceDataGrid.AutoGenerateColumns = true;
-            InvoiceDataGrid.DataContext = searchSQL.GetDataSet().Tables[0].DefaultView;
-        }
-        #endregion
+            InvoiceDataGrid.DataContext = logic.dataSetInvoiceList.Tables[0].DefaultView;
 
+            
+        }
+
+        /// <summary>
+        /// When the selection boxes are changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InvoiceInfo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            PopulateDataGrid();
+        }
+
+        #endregion
     }
 }
