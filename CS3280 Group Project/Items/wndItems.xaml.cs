@@ -66,27 +66,55 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                // TODO: pass in the data
-                string sItemCode = txtbItemName.Text;
-                string sItemDesc = txtbItemDescription.Text;
-
-                // TODO: tryparse on text string from txtbItemCost.Text
+                // variables
+                string sItemCode = "";
+                string sItemDesc = "";
                 int iCost = 0;
 
-                // TODO: calls business logic of clsItemsLogic.cs
-                    // Logic needs to validate Item id does not exist already
-                if (itemsLogic.Add(sItemCode, sItemDesc, iCost))
+                // Check for null values
+                if (txtbItemName.Text == "")
                 {
-                    bItemListUpdated = true;
-                    lblMessage.Content = $"{sItemCode} Added with Description: {sItemDesc}, Code: {iCost}";
-
-                    // update items list
-                    lstItems.ItemsSource = itemsLogic.Items();
+                    tbMessage.Text = "Item Code cannot be empty";
+                    tbMessage.Foreground = Brushes.Red;
                 }
+
+                // tryparse on text string from txtbItemCost.Text
+                else if (Int32.TryParse(txtbItemCost.Text, out iCost) == false)
+                {
+                    // error message for cost
+                    tbMessage.Text = "Cost is not in numeric format";
+                    tbMessage.Foreground = Brushes.Red;
+                }
+
+                else if(txtbItemDescription.Text == "")
+                {
+                    tbMessage.Text = "Item Description cannot be empty";
+                    tbMessage.Foreground = Brushes.Red;
+                }
+
                 else
                 {
-                    bItemListUpdated = false;
-                    lblMessage.Content = $"Error adding {sItemCode}";
+                    sItemCode = txtbItemName.Text;
+                    sItemDesc = txtbItemDescription.Text;
+
+                    // Logic needs to validate Item id does not exist already
+                    if (itemsLogic.Add(sItemCode, sItemDesc, iCost))
+                    {
+                        bItemListUpdated = true;
+                        tbMessage.Text = $"{sItemCode} Added" + System.Environment.NewLine +
+                                        $"Cost: {iCost}" + System.Environment.NewLine +
+                                        $"Description: {sItemDesc}";
+                        tbMessage.Foreground = Brushes.Black;
+
+                        // update items list
+                        lstItems.ItemsSource = itemsLogic.Items();
+                    }
+                    else
+                    {
+                        bItemListUpdated = false;
+                        tbMessage.Text = $"Error adding {sItemCode}";
+                        tbMessage.Foreground = Brushes.Red;
+                    }
                 }
             }
             catch (Exception ex)
@@ -105,27 +133,50 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                // TODO: pass in the item code from the selection
-                string sItemCode = txtbItemName.Text;
+                // variables
+                string sItemCode = "";
 
-                // TODO: calls business logic of clsItemsLogic.cs. 
-                // Logic should not allow deletion if the item exists in an invoice
-                // Display error if error in deletion
-                if (itemsLogic.Delete(sItemCode))
+                // Check for null values
+                if (txtbItemName.Text == "")
                 {
-                    bItemListUpdated = true;
-                    lblMessage.Content = $"{sItemCode} Deleted from Items";
-
-                    // update items list
-                    lstItems.ItemsSource = itemsLogic.Items();
+                    tbMessage.Text = "Item Code must be selected";
+                    tbMessage.Foreground = Brushes.Red;
                 }
+
                 else
                 {
-                    bItemListUpdated = false;
-                    lblMessage.Content = $"Error deleting {sItemCode} from Items";
+                    // pass in the item code from the selection
+                    sItemCode = txtbItemName.Text;
 
-                    // TODO: list the invoices the item is on from the itemsLogic.dsItemOnInvoices
-                    lblMainMessage.Content = $"{sItemCode} Exists in the following invoices: .......";
+                    // Logic should not allow deletion if the item exists in an invoice
+                    // Display error if error in deletion
+                    if (itemsLogic.Delete(sItemCode))
+                    {
+                        bItemListUpdated = true;
+                        tbMessage.Text = $"{sItemCode} Deleted from Items";
+                        tbMessage.Foreground = Brushes.Black;
+
+                        // update items list
+                        lstItems.ItemsSource = itemsLogic.Items();
+                    }
+                    else
+                    {
+                        bItemListUpdated = false;
+                        tbMessage.Text = $"Error deleting {sItemCode} from Items";
+                        tbMessage.Foreground = Brushes.Red;
+
+                        // list the invoices the item is on from the itemsLogic.dsItemOnInvoices
+                        if (itemsLogic.dsItemOnInvoices.Tables[0].Rows.Count > 0)
+                        {
+                            tbMessage.Text = $"{sItemCode} Exists in the following invoices: " + System.Environment.NewLine;
+                            
+                            // append the invoice numbers
+                            foreach (DataRow row in itemsLogic.dsItemOnInvoices.Tables[0].Rows)
+                            {
+                                tbMessage.Text += $"{row[0].ToString()}" + System.Environment.NewLine;
+                            } 
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -144,28 +195,57 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                // TODO: pass in the data
-                string sItemCode = txtbItemName.Text;
-                string sItemDesc = txtbItemDescription.Text;
-
-                // TODO: tryparse on text string from txtbItemCost.Text
+                // pass in the data
+                string sItemCode = "";
+                string sItemDesc = "";
                 int iCost = 0;
 
-                // TODO: calls business logic of clsItemsLogic.cs
-                // Logic should not allow edit of the code.
-                // Only allows edit of the description and cost.
-                if (itemsLogic.Update(sItemCode, sItemDesc, iCost))
+                // Check for null values
+                if (txtbItemName.Text == "")
                 {
-                    bItemListUpdated = true;
-                    lblMessage.Content = $"{sItemCode} updated Description: {sItemDesc}, Cost: {iCost}";
-                    
-                    // update items list
-                    lstItems.ItemsSource = itemsLogic.Items();
+                    tbMessage.Text = "Item Code cannot be empty";
+                    tbMessage.Foreground = Brushes.Red;
                 }
+
+                // tryparse on text string from txtbItemCost.Text
+                else if (Int32.TryParse(txtbItemCost.Text, out iCost) == false)
+                {
+                    // error message for cost
+                    tbMessage.Text = "Cost is not in numeric format";
+                    tbMessage.Foreground = Brushes.Red;
+                }
+
+                else if (txtbItemDescription.Text == "")
+                {
+                    tbMessage.Text = "Item Description cannot be empty";
+                    tbMessage.Foreground = Brushes.Red;
+                }
+
                 else
                 {
-                    bItemListUpdated = false;
-                    lblMessage.Content = $"Error updating {sItemCode}";
+                    sItemCode = txtbItemName.Text;
+                    sItemDesc = txtbItemDescription.Text;
+
+                    // Logic should not allow edit of the code.
+                    // Only allows edit of the description and cost.
+                    if (itemsLogic.Update(sItemCode, sItemDesc, iCost))
+                    {
+                        bItemListUpdated = true;
+                        tbMessage.Text = $"{sItemCode} Updated" + System.Environment.NewLine +
+                                        $"Cost: {iCost}" + System.Environment.NewLine +
+                                        $"Description: {sItemDesc}";
+                        tbMessage.Foreground = Brushes.Black;
+
+                        // update items list
+                        lstItems.ItemsSource = itemsLogic.Items();
+                    }
+                    else
+                    {
+                        bItemListUpdated = false;
+                        tbMessage.Text = $"Error updating {sItemCode}" + System.Environment.NewLine +
+                                        "Item may not exist in the database or a general error occurred";
+                        tbMessage.Foreground = Brushes.Red;
+                    }
                 }
             }
             catch (Exception ex)
@@ -195,7 +275,7 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                // TODO: populate the Add/ Edit / Delete form window
+                // populate the Add/ Edit / Delete form window
                 if (lstItems.SelectedItem != null)
                 {
                     clsItem Item = (clsItem)lstItems.SelectedItem;
@@ -203,24 +283,6 @@ namespace CS3280_Group_Project.Items
                     txtbItemDescription.Text = Item.sItemDesc;
                     txtbItemCost.Text = Item.iItemCost.ToString();
                 }
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                            MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Window closing event 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            try
-            {
-                // TODO: handle any notifications (if needed) back to main window
             }
             catch (Exception ex)
             {

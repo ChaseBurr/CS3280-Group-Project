@@ -33,15 +33,22 @@ namespace CS3280_Group_Project.Items
         /// </summary>
         public clsItemsLogic()
         {
-            db = new clsDataAccess();
-            dsItemOnInvoices = new DataSet();
+            try
+            {
+                db = new clsDataAccess();
+                dsItemOnInvoices = new DataSet();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
         /// Select all items from database
         /// </summary>
         /// <returns>all items</returns>
-        //public List<DataRow> Items()
         public List<clsItem> Items()
         {
             try
@@ -69,6 +76,7 @@ namespace CS3280_Group_Project.Items
                     iCost = 0;
                     bNumValid = Int32.TryParse( drRow.ItemArray[2].ToString(), out iCost);
 
+                    // if parsing of string to int valid
                     if (bNumValid)
                     {
                         lstItems.Add(new clsItem { sItemName = sName, sItemDesc = sDescription, iItemCost = iCost });
@@ -96,19 +104,14 @@ namespace CS3280_Group_Project.Items
             try
             {
                 // Initialize variables
-                bool bSuccess = false;
                 string sNonSQLQuery = clsItemsSQL.AddItem(sItemCode, sItemDesc, iCost);
+                int iRowsAffected = 0;
 
                 // Add item query
-                int iRowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
+                iRowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
 
-                // return count should be 1 for indication item was added
-                if (iRowsAffected >= 1)
-                {
-                    bSuccess = true;
-                }
-
-                return bSuccess;
+                // return success
+                return (iRowsAffected >= 1);
             }
             catch (Exception ex)
             {
@@ -129,7 +132,7 @@ namespace CS3280_Group_Project.Items
                 // initialize variables
                 string sSQLQuery = clsItemsSQL.ItemInvoiceNum(sItemCode);
                 int iRetCnt = 0;
-                bool bSuccess = false;
+                int rowsAffected = 0;
 
                 // Determine if ItemCode exists in an invoice
                 dsItemOnInvoices = db.ExecuteSQLStatement(sSQLQuery, ref iRetCnt);
@@ -139,16 +142,11 @@ namespace CS3280_Group_Project.Items
                 {
                     // Delete the item
                     sSQLQuery = clsItemsSQL.DeleteItem(sItemCode);
-                    int rowsAffected = db.ExecuteNonQuery(sSQLQuery);
-
-                    // update success status
-                    if (rowsAffected >= 1)
-                    {
-                        bSuccess = true;
-                    }
+                    rowsAffected = db.ExecuteNonQuery(sSQLQuery);
                 }
 
-                return bSuccess;
+                //return success;
+                return (rowsAffected >= 1);
             }
             catch (Exception ex)
             {
@@ -168,20 +166,31 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                // Initialize variables
-                bool bSuccess = false;
-                string sNonSQLQuery = clsItemsSQL.UpdateItem(sItemCode, sItemDesc, iCost);
+                // variables
+                bool itemCodeFound = false;
+                int rowsAffected = 0;
 
-                // Execute the update
-                int rowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
-
-                // update success status
-                if (rowsAffected >= 1)
+                // verify the Item Code hasn't been changed
+                foreach (DataRow row in dsItems.Tables[0].Rows)
                 {
-                    bSuccess = true;
+                    if (row[0].ToString() == sItemCode)
+                    {
+                        itemCodeFound = true;
+                    }
                 }
 
-                return bSuccess;
+                // if exists in database proceed with update
+                if (itemCodeFound)
+                {
+                    // Initialize variables
+                    string sNonSQLQuery = clsItemsSQL.UpdateItem(sItemCode, sItemDesc, iCost);
+
+                    // Execute the update
+                    rowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
+                }
+                
+                // return success
+                return (rowsAffected >= 1);
             }
             catch (Exception ex)
             {

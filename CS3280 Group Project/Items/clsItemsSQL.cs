@@ -119,8 +119,8 @@ namespace CS3280_Group_Project.Items
             try
             {
                 // Define the SQL statement
-                string sSQL = "UPDATE ItemDesc" +
-                                $"SET ItemDesc = '{sItemDesc}', Cost = {iCost}" +
+                string sSQL = "UPDATE ItemDesc " +
+                                $"SET ItemDesc = '{sItemDesc}', Cost = {iCost} " +
                                 $"WHERE ItemCode = '{sItemCode}'";
 
                 // returns the SQL statement
