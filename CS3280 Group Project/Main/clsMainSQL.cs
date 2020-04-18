@@ -27,6 +27,55 @@ namespace CS3280_Group_Project.Main
             db = new clsDataAccess();
             ds = new DataSet();
         }
+        
+
+        // update
+        public void Update(int InvoiceNumber, int TotalCost)
+        {
+            db.ExecuteNonQuery($"UPDATE Invoices SET TotalCost = {TotalCost} Where InvoiceNum = {InvoiceNumber}");
+        }
+
+        #region Delete queries
+
+        public void DeleteItem(int InvoiceNumber)
+        {
+            // need to delete from item desc first
+            db.ExecuteNonQuery($"DELETE FROM LineItems Where InvoiceNum = {InvoiceNumber}");
+        }
+
+        public void DeleteInvoice(int InvoiceNumber)
+        {
+            db.ExecuteNonQuery($"DELETE FROM Invoices Where InvoiceNum = {InvoiceNumber}");
+        }
+
+        #endregion
+
+        #region Select Statements
+
+        public DataSet SelectInvoice(int InvoiceNumber)
+        {
+            int iRet = 0;
+            ds = db.ExecuteSQLStatement($"SELECT InvoiceNum, InvoiceDate, TotalCost FROM Invoices WHERE InvoiceNum = {InvoiceNumber}", ref iRet);
+            return ds;
+        }
+
+        public DataSet SelectItemDesc()
+        {
+            int iRet = 0;
+            ds = db.ExecuteSQLStatement($"select ItemCode, ItemDesc, Cost FROM ItemDesc", ref iRet);
+            return ds;
+        }
+
+        public DataSet SelectItem(int InvoiceNumber)
+        {
+            int iRet = 0;
+            ds = db.ExecuteSQLStatement("SELECT li.ItemCode, id.ItemDesc, id.Cost FROM LineItems li, ItemDesc id " +
+                                        $"Where li.ItemCode = id.ItemCode = {InvoiceNumber} AND li.InvoiceNum = {InvoiceNumber}", ref iRet);
+            return ds;
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Inserts invoice into database
@@ -39,7 +88,7 @@ namespace CS3280_Group_Project.Main
             try
             {
                 int invoiceNum = GetMaxInvoiceNumber() + 1;
-                db.ExecuteNonQuery($"INSERT INTO Invoices(InvoiceNum, InvoiceDate, TotalCost) VALUSE({invoiceNum}, {date}, {cost})");
+                db.ExecuteNonQuery($"INSERT INTO Invoices(InvoiceNum, InvoiceDate, TotalCost) VALUES({invoiceNum}, {date}, {cost})");
                 db.ExecuteNonQuery($"INSERT INTO LineItems(InvoiceNum, ItemCode) VALUSE({invoiceNum}, {getItemCode(desc)})");
             }
             catch (Exception ex)

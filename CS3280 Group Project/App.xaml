@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:CS3280_Group_Project"
              StartupUri="Main/wndMain.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="Themes/BureauBlack.xaml"/>
     </Application.Resources>
 </Application>

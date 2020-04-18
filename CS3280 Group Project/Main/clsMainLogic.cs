@@ -2,6 +2,7 @@
 using CS3280_Group_Project.Search;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,6 +21,8 @@ namespace CS3280_Group_Project.Main
 		/// holds the list of items
 		/// </summary>
 		private List<clsItem> items;
+
+		DataSet SelectedInvoice;
         #endregion
 
         /// <summary>
