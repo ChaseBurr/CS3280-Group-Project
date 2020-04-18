@@ -108,13 +108,30 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                // Initialize variables
-                string sNonSQLQuery = clsItemsSQL.AddItem(sItemCode, sItemDesc, iCost);
+                // variables
+                bool itemCodeFound = false;
                 int iRowsAffected = 0;
 
-                // Add item query
-                iRowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
+                // verify the Item Code exists
+                foreach (DataRow row in dsItems.Tables[0].Rows)
+                {
+                    if (row[0].ToString() == sItemCode)
+                    {
+                        itemCodeFound = true;
+                    }
+                }
 
+                // only add if item doesn't exist
+                if (!itemCodeFound)
+                {
+                    // Initialize variables
+                    string sNonSQLQuery = clsItemsSQL.AddItem(sItemCode, sItemDesc, iCost);
+                    iRowsAffected = 0;
+
+                    // Add item query
+                    iRowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
+                }
+                
                 // return success
                 return (iRowsAffected >= 1);
             }
@@ -173,7 +190,7 @@ namespace CS3280_Group_Project.Items
             {
                 // variables
                 bool itemCodeFound = false;
-                int rowsAffected = 0;
+                int iRowsAffected = 0;
 
                 // verify the Item Code hasn't been changed
                 foreach (DataRow row in dsItems.Tables[0].Rows)
@@ -191,11 +208,11 @@ namespace CS3280_Group_Project.Items
                     string sNonSQLQuery = clsItemsSQL.UpdateItem(sItemCode, sItemDesc, iCost);
 
                     // Execute the update
-                    rowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
+                    iRowsAffected = db.ExecuteNonQuery(sNonSQLQuery);
                 }
                 
                 // return success
-                return (rowsAffected >= 1);
+                return (iRowsAffected >= 1);
             }
             catch (Exception ex)
             {

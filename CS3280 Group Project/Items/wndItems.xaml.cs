@@ -112,7 +112,8 @@ namespace CS3280_Group_Project.Items
                     else
                     {
                         bItemListUpdated = false;
-                        tbMessage.Text = $"Error adding {sItemCode}";
+                        tbMessage.Text = $"Error adding {sItemCode}" + System.Environment.NewLine +
+                                        "Item may already exist in the database or a general error occurred";
                         tbMessage.Foreground = Brushes.Red;
                     }
                 }
