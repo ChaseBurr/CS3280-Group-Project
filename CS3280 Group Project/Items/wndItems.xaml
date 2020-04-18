@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280_Group_Project.Items"
         mc:Ignorable="d"
-        Title="Add, Update, or Delete Items Interface" Height="450" Width="800" Loaded="Window_Loaded" Background="#FFECECEC" ResizeMode="CanMinimize">
+        Title="Add, Update, or Delete Items Interface" Height="450" Width="800" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="#FF71777C" WindowStartupLocation="CenterScreen">
 
     <DockPanel>
-        <StackPanel DockPanel.Dock="Right" Width="auto" Background="#FF71777C">
+        <StackPanel DockPanel.Dock="Right" Width="auto" Background="#FF43474A">
             <Button x:Name="btnAddItem" Margin="10,75,10,25" Width="100" Height="50" Content="Add Item" Click="btnAddItem_Click" />
             <Button x:Name="btnEditItem" Margin="10,25" Width="100" Height="50" Content="Update Item" Click="btnEditItem_Click" />
             <Button x:Name="btnDeleteItem" Margin="10,25" Width="100" Height="50" Content="Delete Item" Click="btnDeleteItem_Click" />

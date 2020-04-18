@@ -83,6 +83,11 @@ namespace CS3280_Group_Project.Items
                     }
                 }
 
+                // comparer object for sorting the item code
+                clsItemComparer itemComparer = new clsItemComparer();
+                lstItems.Sort(itemComparer);
+
+                // return the items list
                 return lstItems;
             }
             catch (Exception ex)
