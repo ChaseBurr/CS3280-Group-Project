@@ -43,10 +43,18 @@ namespace CS3280_Group_Project.Items
         private wndSearch search;
 
         /// <summary>
+        /// holds the search logic
+        /// </summary>
+        private clsSearchLogic SearchLogic;
+
+        /// <summary>
         /// ItemLogic object to access item info
         /// </summary>
         private clsItemsLogic ItemLogic;
 
+        /// <summary>
+        /// holds the new invoice information
+        /// </summary>
         private clsItem NewInvoice;
 
         /// <summary>
@@ -59,7 +67,22 @@ namespace CS3280_Group_Project.Items
         /// </summary>
         private string sSelectedItem;
 
-        private ObservableCollection<clsItem> SelectedItems;
+        /// <summary>
+        /// holds the state of selecting invoice or create a new one
+        /// </summary>
+        bool bSelectedInvoice = false;
+
+        public string sInvoiceID;
+
+        /// <summary>
+        /// holds the total cost
+        /// </summary>
+        private double cost;
+
+        /// <summary>
+        /// holds a list of clsItems
+        /// </summary>
+        private List<clsItem> SelectedItems;
 
         /// <summary>
         /// Default constructor for wndMain
@@ -72,15 +95,14 @@ namespace CS3280_Group_Project.Items
                 Logic = new clsMainLogic();
                 sql = new clsMainSQL();
                 ItemLogic = new clsItemsLogic();
-                SelectedItems = new ObservableCollection<clsItem>();
+                ds = new DataSet();
+                SelectedItems = new List<clsItem>();
+                SearchLogic = new clsSearchLogic();
 
                 // Populate cbItemList
                 List<clsItem> item = ItemLogic.Items();
                 cbItemList.SetBinding(ComboBox.ItemsSourceProperty, new Binding() { Source = item });
                 cbItemList.DisplayMemberPath = "sItemDesc";
-
-                // TODO:
-                // TODO:
             }
             catch (Exception ex)
             {
@@ -98,11 +120,10 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                //TODO: Pass in this for the object returned
-                search = new wndSearch();
-                App.Current.MainWindow = search;
-                search.Show();
-
+                search = new wndSearch(this);
+                //App.Current.MainWindow = search;
+                search.ShowDialog();
+                
             }
             catch (Exception ex)
             {
@@ -142,12 +163,11 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                //TODO: enable everything needed
                 cbItemList.IsEnabled = true;
                 btnCancel.IsEnabled = true;
                 btnAddInvoice.IsEnabled = false;
-
-                NewInvoice = new clsItem();
+                ClearUI();
+                //NewInvoice = new clsItem();
 
 
             }
@@ -167,7 +187,7 @@ namespace CS3280_Group_Project.Items
         {
             try
             {
-                // TODO: Changes grids and fills the empty values with selected invoice
+                dgItemList.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -267,23 +287,6 @@ namespace CS3280_Group_Project.Items
             }
         }
 
-        /// <summary>
-        /// Add items to the datagrid based off user input
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddItemToGrid(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
         #endregion
 
         #endregion
@@ -299,8 +302,6 @@ namespace CS3280_Group_Project.Items
             {
 
                 btnAddItem.IsEnabled = true;
-                tbQuantity.IsEnabled = true;
-
             }
             catch (Exception ex)
             {
@@ -326,27 +327,16 @@ namespace CS3280_Group_Project.Items
         }
 
         /// <summary>
-        /// Update total cost when quantity is changed
+        /// Handle button click event to add items to the grid
         /// </summary>
-        private void UpdateTotal()
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddItemToGrid(object sender, RoutedEventArgs e)
         {
             try
             {
                 if(sSelectedItem != "")
                 {
-                    btnDeleteItem.IsEnabled = true;
                     clsItem selected = (clsItem)cbItemList.SelectedItem;
 
                     clsItem Item = new clsItem();
@@ -354,9 +344,12 @@ namespace CS3280_Group_Project.Items
                     Item.sItemName = selected.sItemName;
                     Item.iItemCost = selected.iItemCost;
 
+                    cost += selected.iItemCost;
+                    tbTotalCost.Text = cost.ToString();
                     SelectedItems.Add(Item);
 
                     UpdateDataGrid(SelectedItems);
+                    btnSave.IsEnabled = true;
                 }
             }
             catch (Exception ex)
@@ -365,23 +358,145 @@ namespace CS3280_Group_Project.Items
             }
         }
 
-        private void UpdateDataGrid(ObservableCollection<clsItem> Item)
+        /// <summary>
+        /// updates the grid
+        /// </summary>
+        /// <param name="Item"></param>
+        private void UpdateDataGrid(List<clsItem> Item)
         {
-            dgItemList.ItemsSource = null;
-            dgItemList.ItemsSource = Item;
+            try
+            {
+                dgItemList.ItemsSource = null;
+                dgItemList.ItemsSource = Item;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Handles selection change event on data grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgItemList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            try
+            {
+                btnDeleteItem.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Handles delete item click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            clsItem item = (clsItem)dgItemList.SelectedItem;
-            int cost = item.iItemCost;
-            SelectedItems.RemoveAt(dgItemList.SelectedIndex);
-            UpdateDataGrid(SelectedItems);
+            try
+            {
+                clsItem item = (clsItem)dgItemList.SelectedItem;
+                cost -= item.iItemCost;
+                tbTotalCost.Text = cost.ToString();
+                SelectedItems.RemoveAt(dgItemList.SelectedIndex);
+                UpdateDataGrid(SelectedItems);
+                btnDeleteItem.IsEnabled = false;
+
+                if (SelectedItems.Count == 0)
+                    btnSave.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Handles Cancel button click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // disable/enable buttons
+                btnAddItem.IsEnabled = false;
+                btnDeleteItem.IsEnabled = false;
+                btnCancel.IsEnabled = false;
+                btnEditInvoice.IsEnabled = false;
+                btnDeleteInvoice.IsEnabled = false;
+                cbItemList.IsEnabled = false;
+                btnSave.IsEnabled = false;
+                btnAddInvoice.IsEnabled = true;
+
+                // reset datagrid and combobox
+                cbItemList.SelectedIndex = -1;
+                dgItemList.ItemsSource = null;
+
+                InvoiceNumberLabel.Content = "Invoice # TBD";
+                InvoiceDateLabel.Content = "Date: MM/DD/YYYY";
+                tbTotalCost.Text = "";
+                cost = 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Holds the save button click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Logic.AddInvoice(SelectedItems, cost);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// fill in invoice that's been selected from the search
+        /// </summary>
+        public void FillInvoice()
+        {
+            if (sInvoiceID != "none")
+            {
+                btnEditInvoice.IsEnabled = true;
+                btnCancel.IsEnabled = true;
+                btnAddInvoice.IsEnabled = false;
+                dgItemList.IsEnabled = false;
+                List<clsItem> items = new List<clsItem>();
+                ds = sql.SelectInvoice(Convert.ToInt32(sInvoiceID));
+                InvoiceNumberLabel.Content = "Invoice # " + sInvoiceID;
+                InvoiceDateLabel.Content = ds.Tables[0].Rows[0][1].ToString();
+                tbTotalCost.Text = ds.Tables[0].Rows[0][2].ToString();
+
+                ds = sql.SelectItem(Convert.ToInt32(sInvoiceID));
+
+                dgItemList.ItemsSource = null;
+                dgItemList.DataContext = ds.Tables[0].DefaultView;
+            }
+        }
+
+        private void ClearUI()
+        {
+            InvoiceNumberLabel.Content = "Invoice # TBD";
+            InvoiceDateLabel.Content = "Date: MM/DD/YYYY";
+            tbTotalCost.Text = "";
         }
     }
 }

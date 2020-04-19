@@ -5,30 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280_Group_Project.Items"
         mc:Ignorable="d"
-        Title="Invoice System" Height="450" Width="800">
+        Title="Invoice System" Height="458" Width="800">
     <Grid HorizontalAlignment="Left" Width="792">
         <Grid.Background>
             <SolidColorBrush Color="#FF71777C" />
         </Grid.Background>
 
         <DockPanel Margin="0,0,0,390">
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Height="34">
                 <MenuItem Click="UpdateItems" Header="Update Items" />
                 <MenuItem Click="SearchForInvoice" Header="Search" />
             </Menu>
         </DockPanel>
 
         <Grid x:Name="MainMenuGrid">
-            <Label   x:Name="InvoiceNumberLabel" Content="Invoice # TBD" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="31,36,0,0" VerticalAlignment="Top"/>
-            <Label   x:Name="InvoiceDateLabel"   Content="Date: MM/DD/YYYY" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="235,36,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="TotalCostTextBox" HorizontalAlignment="Left" Height="23" Margin="486,47,0,0" TextWrapping="Wrap" Text="Total: " VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Label   x:Name="InvoiceNumberLabel" Content="Invoice # TBD" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="31,36,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+            <Label   x:Name="InvoiceDateLabel"   Content="Date: MM/DD/YYYY" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="103,36,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+            <Label   x:Name="TotalLabel"   Content="Total $" Foreground="white" FontSize="20" HorizontalAlignment="Left" Margin="345,36,0,0" VerticalAlignment="Top" Grid.Column="1"/>
 
-            <ComboBox x:Name="cbItemList" HorizontalAlignment="Left" Margin="37,93,0,0" VerticalAlignment="Top" Width="173" SelectionChanged="ItemSelectionChange" Height="27" IsEnabled="false" />
-            <Label Content="Quantity:" Foreground="white" HorizontalAlignment="Left" Margin="278,94,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.223,0.354"/>
-            <TextBox x:Name="tbQuantity" HorizontalAlignment="Left" Height="23" Margin="342,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="28" TextInput="QuantityInput" IsEnabled="false"/>
-            <Button x:Name="btnAddItem" Click="btnAddItemToGrid" Content="Add" Background="white" HorizontalAlignment="Left" Margin="215,93,0,0" VerticalAlignment="Top" Width="55" Height="27" IsEnabled="false"/>
+            <TextBox x:Name="tbTotalCost" HorizontalAlignment="Left" Height="23" Margin="408,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="False" RenderTransformOrigin="0.167,0.609" Grid.Column="1"/>
 
-            <DataGrid x:Name="dgItemList" HorizontalAlignment="Left" Height="226" Margin="37,135,0,0" VerticalAlignment="Top" Width="718" IsReadOnly="True" AutoGenerateColumns="false" SelectionChanged="dgItemList_SelectionChanged">
+            <ComboBox x:Name="cbItemList" HorizontalAlignment="Left" Margin="37,93,0,0" VerticalAlignment="Top" Width="173" SelectionChanged="ItemSelectionChange" Height="27" IsEnabled="false" Grid.ColumnSpan="2" />
+            <Button x:Name="btnAddItem" Click="btnAddItemToGrid" Content="Add" Background="white" HorizontalAlignment="Left" Margin="83,93,0,0" VerticalAlignment="Top" Width="55" Height="27" IsEnabled="false" Grid.Column="1"/>
+
+            <DataGrid x:Name="dgItemList" HorizontalAlignment="Left" Height="226" Margin="37,135,0,0" VerticalAlignment="Top" Width="718" IsReadOnly="True" AutoGenerateColumns="false" SelectionChanged="dgItemList_SelectionChanged" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Item Code" Binding="{Binding Path=sItemName}" />
                     <DataGridTextColumn Header="Item Description" Binding="{Binding Path=sItemDesc}" />
@@ -36,11 +40,12 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button x:Name="btnAddInvoice"    Click="AddInvoice"       Content="Add Invoice"  FontSize="15" Margin="314,374,347,11" />
-            <Button x:Name="btnEditInvoice"   Click="EditInvoice"      Content="Edit Invoice"  FontSize="15" Margin="477,374,192,11"   IsEnabled="False" />
-            <Button x:Name="btnDeleteInvoice" Click="DeleteInvoice"    Content="Delete Invoice" FontSize="15" Margin="632,375,33,11"  IsEnabled="False" />
-            <Button Content="Delete Item" Click="DeleteItem_Click" x:Name="btnDeleteItem" HorizontalAlignment="Left" Margin="19,375,0,0" VerticalAlignment="Top" Width="123" IsEnabled="false" Height="33" />
-            <Button Content="Cancel" x:Name="btnCancel"  HorizontalAlignment="Left" Margin="164,375,0,0" VerticalAlignment="Top" Width="124" Height="33" IsEnabled="false" />
+            <Button x:Name="btnAddInvoice"    Click="AddInvoice"       Content="Add Invoice"  FontSize="15" Margin="146,366,419,0" VerticalAlignment="Top" Height="33" Grid.Column="1" />
+            <Button x:Name="btnEditInvoice"   Click="EditInvoice"      Content="Edit Invoice"  FontSize="15" Margin="394,366,170,0" VerticalAlignment="Top" Height="33"  IsEnabled="False" Grid.Column="1" RenderTransformOrigin="0.438,0.576" />
+            <Button x:Name="btnDeleteInvoice" Click="DeleteInvoice"    Content="Delete Invoice" FontSize="15" Margin="509,366,37,0" VerticalAlignment="Top" Height="33"  IsEnabled="False" Grid.Column="1" />
+            <Button x:Name="btnDeleteItem"    Click="DeleteItem_Click" Content="Delete Item"   HorizontalAlignment="Left" Margin="37,366,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false" />
+            <Button x:Name="btnCancel"        Click="btnCancel_Click"  Content="Cancel"   HorizontalAlignment="Left" Margin="28,366,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false"  Grid.Column="1" />
+            <Button x:Name="btnSave"          Click="btnSave_Click"    Content="Save"   HorizontalAlignment="Left" Margin="278,366,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false"  Grid.Column="1" />
         </Grid>
     </Grid>
 </Window>

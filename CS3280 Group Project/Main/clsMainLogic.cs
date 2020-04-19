@@ -2,6 +2,7 @@
 using CS3280_Group_Project.Search;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -17,22 +18,43 @@ namespace CS3280_Group_Project.Main
 		/// holds sql queries
 		/// </summary>
 		private clsMainSQL sql;
-		/// <summary>
-		/// holds the list of items
-		/// </summary>
-		private List<clsItem> items;
 
-		DataSet SelectedInvoice;
+		public DataSet ds;
+
+		/// <summary>
+		/// clsMainLogic Constructor
+		/// </summary>
+		public clsMainLogic()
+		{
+			try
+			{
+				sql = new clsMainSQL();
+				ds = new DataSet();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+			}
+		}
+
         #endregion
 
         /// <summary>
         /// adds invoice to db
         /// </summary>
-        public void AddInvoice()
+        public void AddInvoice(List<clsItem> SelectedItems, double TotalCost)
         {
 			try
 			{
-				// add invoice to db
+				int InvoiceNumber = sql.GetMaxInvoiceNumber() + 1;
+				int LineItem = 1;
+				string date = DateTime.UtcNow.ToString("MM/dd/yyyy");
+				sql.InsertInvoice(date, TotalCost);
+				foreach (var item in SelectedItems)
+				{
+					sql.InsertItem(InvoiceNumber, LineItem, item.sItemName);
+					LineItem++;
+				}
 			}
 			catch (Exception ex)
 			{
@@ -85,20 +107,6 @@ namespace CS3280_Group_Project.Main
 			}
 		}
 
-		/// <summary>
-		/// removes item from grid
-		/// </summary>
-		public void RemoveItem(object i)
-		{
-			try
-			{
-				// remove item from grid
-			}
-			catch (Exception ex)
-			{
-				throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-			}
-		}
 
     }
 

@@ -31,19 +31,24 @@ namespace CS3280_Group_Project.Search
         /// Logic for search window
         /// </summary>
         clsSearchLogic logic = new clsSearchLogic();
-            
+
+        /// <summary>
+        /// Holds main window content
+        /// </summary>
+        wndMain mw;
         #endregion
 
         #region Constructor
         /// <summary>
         /// Constructor for wndSearch
         /// </summary>
-        public wndSearch()
+        public wndSearch(wndMain window)
         {
             try {
                 InitializeComponent();
                 PopulateDropdowns();
                 PopulateDataGrid();
+                mw = window;
             } catch (Exception ex) {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
@@ -80,6 +85,8 @@ namespace CS3280_Group_Project.Search
                     DataRowView rowview = InvoiceDataGrid.SelectedItem as DataRowView;
                     string invoiceID = rowview.Row[0].ToString();
                     logic.setInvoiceID(invoiceID);
+                    mw.sInvoiceID = invoiceID;
+                    mw.FillInvoice();
                     this.Close();
                 }
             } catch (Exception ex) {

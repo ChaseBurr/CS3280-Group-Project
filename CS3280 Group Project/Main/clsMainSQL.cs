@@ -10,6 +10,7 @@ namespace CS3280_Group_Project.Main
 {
     class clsMainSQL
     {
+        #region Attributes
         /// <summary>
         /// database connection
         /// </summary>
@@ -18,6 +19,7 @@ namespace CS3280_Group_Project.Main
         /// dataset object
         /// </summary>
         DataSet ds;
+        #endregion
 
         /// <summary>
         /// Main constructor
@@ -27,22 +29,37 @@ namespace CS3280_Group_Project.Main
             db = new clsDataAccess();
             ds = new DataSet();
         }
-        
 
-        // update
+        #region Update Queries
+        
+        /// <summary>
+        /// update invoice
+        /// </summary>
+        /// <param name="InvoiceNumber"></param>
+        /// <param name="TotalCost"></param>
         public void Update(int InvoiceNumber, int TotalCost)
         {
             db.ExecuteNonQuery($"UPDATE Invoices SET TotalCost = {TotalCost} Where InvoiceNum = {InvoiceNumber}");
         }
+        
+        #endregion
 
         #region Delete queries
 
+        /// <summary>
+        /// delete item from table
+        /// </summary>
+        /// <param name="InvoiceNumber"></param>
         public void DeleteItem(int InvoiceNumber)
         {
             // need to delete from item desc first
             db.ExecuteNonQuery($"DELETE FROM LineItems Where InvoiceNum = {InvoiceNumber}");
         }
 
+        /// <summary>
+        /// delete invoice
+        /// </summary>
+        /// <param name="InvoiceNumber"></param>
         public void DeleteInvoice(int InvoiceNumber)
         {
             db.ExecuteNonQuery($"DELETE FROM Invoices Where InvoiceNum = {InvoiceNumber}");
@@ -52,6 +69,11 @@ namespace CS3280_Group_Project.Main
 
         #region Select Statements
 
+        /// <summary>
+        /// returns dataset of the invoice number searched for
+        /// </summary>
+        /// <param name="InvoiceNumber"></param>
+        /// <returns></returns>
         public DataSet SelectInvoice(int InvoiceNumber)
         {
             int iRet = 0;
@@ -59,6 +81,10 @@ namespace CS3280_Group_Project.Main
             return ds;
         }
 
+        /// <summary>
+        /// returns the item descriptions
+        /// </summary>
+        /// <returns></returns>
         public DataSet SelectItemDesc()
         {
             int iRet = 0;
@@ -66,30 +92,33 @@ namespace CS3280_Group_Project.Main
             return ds;
         }
 
+        /// <summary>
+        /// select item based off invoice number
+        /// </summary>
+        /// <param name="InvoiceNumber"></param>
+        /// <returns></returns>
         public DataSet SelectItem(int InvoiceNumber)
         {
             int iRet = 0;
-            ds = db.ExecuteSQLStatement("SELECT li.ItemCode, id.ItemDesc, id.Cost FROM LineItems li, ItemDesc id " +
-                                        $"Where li.ItemCode = id.ItemCode = {InvoiceNumber} AND li.InvoiceNum = {InvoiceNumber}", ref iRet);
+            ds = db.ExecuteSQLStatement($"SELECT li.ItemCode, id.ItemDesc, id.Cost FROM LineItems li inner join ItemDesc id ON li.ItemCode = id.ItemCode WHERE li.InvoiceNum = {InvoiceNumber}", ref iRet);
             return ds;
         }
 
         #endregion
 
+        #region Insert Queries
 
         /// <summary>
-        /// Inserts invoice into database
+        /// Inserts items into LineItems
         /// </summary>
-        /// <param name="cost"></param>
-        /// <param name="date"></param>
-        /// <param name="desc"></param>
-        public void Insert(int cost, string date, string desc)
+        /// <param name="InvoiceNum">invoice number</param>
+        /// <param name="LinItem">line item number</param>
+        /// <param name="ItemCode">item code</param>
+        public void InsertItem(int InvoiceNum, int LinItem, string ItemCode)
         {
             try
             {
-                int invoiceNum = GetMaxInvoiceNumber() + 1;
-                db.ExecuteNonQuery($"INSERT INTO Invoices(InvoiceNum, InvoiceDate, TotalCost) VALUES({invoiceNum}, {date}, {cost})");
-                db.ExecuteNonQuery($"INSERT INTO LineItems(InvoiceNum, ItemCode) VALUSE({invoiceNum}, {getItemCode(desc)})");
+                db.ExecuteNonQuery($"INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) Values ({InvoiceNum}, {LinItem}, '{ItemCode}')");
             }
             catch (Exception ex)
             {
@@ -98,19 +127,23 @@ namespace CS3280_Group_Project.Main
         }
 
         /// <summary>
-        /// returns item code based off description
+        /// insert invoice into database
         /// </summary>
-        /// <param name="desc"></param>
-        /// <returns></returns>
-        private string getItemCode(string desc)
+        /// <param name="InvoiceDate">Invoice date</param>
+        /// <param name="TotalCost">total cost</param>
+        public void InsertInvoice(string InvoiceDate, double TotalCost)
         {
-            int iRet = 0;
-            ds = db.ExecuteSQLStatement($"SELECT ItemCode FROM ItemDesc where ItemDesc = {desc}", ref iRet);
-            string code = ds.Tables[0].Rows[0][0].ToString();
-
-            return code;
-
+            try
+            {
+                db.ExecuteNonQuery($"INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('{InvoiceDate}', {TotalCost})");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
+
+        #endregion
 
         /// <summary>
         /// returns max invoice number
@@ -123,23 +156,6 @@ namespace CS3280_Group_Project.Main
             int max = Convert.ToInt32(db.ExecuteSQLStatement("SELECT MAX(InvoiceNum) FROM Invoices ", ref iRet).Tables[0].Rows[0][0]);
 
             return max;
-        }
-
-        /// <summary>
-        /// returns invoice datarow based off invoice num
-        /// </summary>
-        /// <param name="invoiceNum"></param>
-        /// <returns></returns>
-        public List<DataRow> GetInvoice(int invoiceNum)
-        {
-            List<DataRow> invoice = new List<DataRow>();
-            int iRet = 0;
-            ds = db.ExecuteSQLStatement("SELECT i.InvoiceNum, i.InvoiceDate, id.ItemDesc, i.TotalCost FROM Invoices i " +
-                                        "inner join LineItems li on i.InvoiceNum = li.InvoiceNum" +
-                                        "inner join ItemDesc id on li.ItemCode = id.ItemCode" +
-                                        $"Where i.InvoiceNum = {invoiceNum}", ref iRet);
-
-            return invoice;
         }
     }
 }
