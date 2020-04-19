@@ -159,6 +159,23 @@ namespace CS3280_Group_Project.Items
         #region Button event handling
 
         /// <summary>
+        /// update button handling
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Add invoice to database
         /// </summary>
         /// <param name="sender"></param>
@@ -170,10 +187,9 @@ namespace CS3280_Group_Project.Items
                 cbItemList.IsEnabled = true;
                 btnCancel.IsEnabled = true;
                 btnAddInvoice.IsEnabled = false;
+                dgItemList.ItemsSource = null;
                 ClearUI();
                 //NewInvoice = new clsItem();
-
-
             }
             catch (Exception ex)
             {
@@ -269,23 +285,6 @@ namespace CS3280_Group_Project.Items
         }
 
         /// <summary>
-        /// Saves invoice to database
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveInvoiceClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
         /// Handles delete item click event
         /// </summary>
         /// <param name="sender"></param>
@@ -328,6 +327,7 @@ namespace CS3280_Group_Project.Items
                 cbItemList.IsEnabled = false;
                 btnSave.IsEnabled = false;
                 btnAddInvoice.IsEnabled = true;
+                btnUpdate.IsEnabled = false;
 
                 // reset datagrid and combobox
                 cbItemList.SelectedIndex = -1;
@@ -354,6 +354,12 @@ namespace CS3280_Group_Project.Items
             try
             {
                 Logic.AddInvoice(SelectedItems, cost);
+                InvoiceNumberLabel.Content = "Invoice # " + sql.GetMaxInvoiceNumber();
+                btnEditInvoice.IsEnabled = true;
+                dgItemList.IsEnabled = false;
+                cbItemList.IsEnabled = false;
+                btnSave.IsEnabled = false;
+                
             }
             catch (Exception ex)
             {
@@ -459,7 +465,9 @@ namespace CS3280_Group_Project.Items
                 btnEditInvoice.IsEnabled = true;
                 btnCancel.IsEnabled = true;
                 btnAddInvoice.IsEnabled = false;
+                cbItemList.IsEnabled = true;
                 dgItemList.IsEnabled = false;
+                btnUpdate.IsEnabled = true;
                 List<clsItem> items = new List<clsItem>();
                 ds = sql.SelectInvoice(Convert.ToInt32(sInvoiceID));
                 InvoiceNumberLabel.Content = "Invoice # " + sInvoiceID;
@@ -468,8 +476,16 @@ namespace CS3280_Group_Project.Items
 
                 ds = sql.SelectItem(Convert.ToInt32(sInvoiceID));
 
-                dgItemList.ItemsSource = null;
-                dgItemList.DataContext = ds.Tables[0].DefaultView;
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    NewInvoice = new clsItem();
+                    NewInvoice.sItemName = item[0].ToString();
+                    NewInvoice.sItemDesc = item[1].ToString(); ;
+                    NewInvoice.iItemCost = Convert.ToInt32(item[2]);
+                    items.Add(NewInvoice);
+                }
+                SelectedItems = items;
+                UpdateDataGrid(items);
             }
         }
 
@@ -482,5 +498,7 @@ namespace CS3280_Group_Project.Items
             InvoiceDateLabel.Content = "Date: MM/DD/YYYY";
             tbTotalCost.Text = "";
         }
+
+        
     }
 }

@@ -40,12 +40,13 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button x:Name="btnAddInvoice"    Click="AddInvoice"       Content="Add Invoice"  FontSize="15" Margin="146,366,419,0" VerticalAlignment="Top" Height="33" Grid.Column="1" />
-            <Button x:Name="btnEditInvoice"   Click="EditInvoice"      Content="Edit Invoice"  FontSize="15" Margin="394,366,170,0" VerticalAlignment="Top" Height="33"  IsEnabled="False" Grid.Column="1" RenderTransformOrigin="0.438,0.576" />
+            <Button x:Name="btnAddInvoice"    Click="AddInvoice"       Content="Add Invoice"  FontSize="15" Margin="110,366,455,0" VerticalAlignment="Top" Height="33" Grid.Column="1" />
+            <Button x:Name="btnEditInvoice"   Click="EditInvoice"      Content="Edit Invoice"  FontSize="15" Margin="408,367,156,0" VerticalAlignment="Top" Height="33"  IsEnabled="False" Grid.Column="1" RenderTransformOrigin="0.438,0.576" />
             <Button x:Name="btnDeleteInvoice" Click="DeleteInvoice"    Content="Delete Invoice" FontSize="15" Margin="509,366,37,0" VerticalAlignment="Top" Height="33"  IsEnabled="False" Grid.Column="1" />
             <Button x:Name="btnDeleteItem"    Click="DeleteItem_Click" Content="Delete Item"   HorizontalAlignment="Left" Margin="37,366,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false" />
-            <Button x:Name="btnCancel"        Click="btnCancel_Click"  Content="Cancel"   HorizontalAlignment="Left" Margin="28,366,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false"  Grid.Column="1" />
-            <Button x:Name="btnSave"          Click="btnSave_Click"    Content="Save"   HorizontalAlignment="Left" Margin="278,366,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false"  Grid.Column="1" />
+            <Button x:Name="btnCancel"        Click="btnCancel_Click"  Content="Cancel"   HorizontalAlignment="Left" Margin="10,366,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false"  Grid.Column="1" />
+            <Button x:Name="btnSave"          Click="btnSave_Click"    Content="Save"   HorizontalAlignment="Left" Margin="210,367,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false"  Grid.Column="1" />
+            <Button x:Name="btnUpdate"          Click="btnUpdate_Click"    Content="Update"   HorizontalAlignment="Left" Margin="308,368,0,0" VerticalAlignment="Top" Width="95" Height="33" IsEnabled="false"  Grid.Column="1" />
         </Grid>
     </Grid>
 </Window>
