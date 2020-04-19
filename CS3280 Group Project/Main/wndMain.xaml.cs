@@ -27,6 +27,7 @@ namespace CS3280_Group_Project.Items
     /// </summary>
     public partial class wndMain : Window
     {
+        #region Attributes
         /// <summary>
         /// Object that holds all the logic behind the main window ui
         /// </summary>
@@ -110,6 +111,8 @@ namespace CS3280_Group_Project.Items
             }
         }
 
+        #endregion
+
         #region Menu Bar event handling
         /// <summary>
         /// Opens the search window
@@ -153,7 +156,8 @@ namespace CS3280_Group_Project.Items
 
         #endregion
 
-        #region Main menu grid view
+        #region Button event handling
+
         /// <summary>
         /// Add invoice to database
         /// </summary>
@@ -191,7 +195,6 @@ namespace CS3280_Group_Project.Items
             }
             catch (Exception ex)
             {
-
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
@@ -214,11 +217,6 @@ namespace CS3280_Group_Project.Items
             }
         }
 
-        #endregion
-
-        #region Invoice View Window
-
-        #region Button event handling
         /// <summary>
         /// Opens different grid when clicked
         /// </summary>
@@ -280,111 +278,6 @@ namespace CS3280_Group_Project.Items
             try
             {
 
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        #endregion
-
-        #endregion
-
-        /// <summary>
-        /// Updates screen when the item is changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ItemSelectionChange(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-
-                btnAddItem.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Changes values based off user input
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void QuantityInput(object sender, TextCompositionEventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Handle button click event to add items to the grid
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAddItemToGrid(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if(sSelectedItem != "")
-                {
-                    clsItem selected = (clsItem)cbItemList.SelectedItem;
-
-                    clsItem Item = new clsItem();
-                    Item.sItemDesc = selected.sItemDesc;
-                    Item.sItemName = selected.sItemName;
-                    Item.iItemCost = selected.iItemCost;
-
-                    cost += selected.iItemCost;
-                    tbTotalCost.Text = cost.ToString();
-                    SelectedItems.Add(Item);
-
-                    UpdateDataGrid(SelectedItems);
-                    btnSave.IsEnabled = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// updates the grid
-        /// </summary>
-        /// <param name="Item"></param>
-        private void UpdateDataGrid(List<clsItem> Item)
-        {
-            try
-            {
-                dgItemList.ItemsSource = null;
-                dgItemList.ItemsSource = Item;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Handles selection change event on data grid
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dgItemList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                btnDeleteItem.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -467,6 +360,94 @@ namespace CS3280_Group_Project.Items
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+        #endregion
+
+        #region grid handling
+        /// <summary>
+        /// Updates screen when the item is changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemSelectionChange(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+
+                btnAddItem.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Handle button click event to add items to the grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAddItemToGrid(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if(sSelectedItem != "")
+                {
+                    clsItem selected = (clsItem)cbItemList.SelectedItem;
+
+                    clsItem Item = new clsItem();
+                    Item.sItemDesc = selected.sItemDesc;
+                    Item.sItemName = selected.sItemName;
+                    Item.iItemCost = selected.iItemCost;
+
+                    cost += selected.iItemCost;
+                    tbTotalCost.Text = cost.ToString();
+                    SelectedItems.Add(Item);
+
+                    UpdateDataGrid(SelectedItems);
+                    btnSave.IsEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// updates the grid
+        /// </summary>
+        /// <param name="Item"></param>
+        private void UpdateDataGrid(List<clsItem> Item)
+        {
+            try
+            {
+                dgItemList.ItemsSource = null;
+                dgItemList.ItemsSource = Item;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Handles selection change event on data grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgItemList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                btnDeleteItem.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// fill in invoice that's been selected from the search
@@ -492,6 +473,9 @@ namespace CS3280_Group_Project.Items
             }
         }
 
+        /// <summary>
+        /// resets ui back to normal
+        /// </summary>
         private void ClearUI()
         {
             InvoiceNumberLabel.Content = "Invoice # TBD";

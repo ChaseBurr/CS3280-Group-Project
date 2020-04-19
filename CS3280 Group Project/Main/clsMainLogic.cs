@@ -19,12 +19,18 @@ namespace CS3280_Group_Project.Main
 		/// </summary>
 		private clsMainSQL sql;
 
-		public DataSet ds;
-
 		/// <summary>
-		/// clsMainLogic Constructor
+		/// holds dataset values
 		/// </summary>
-		public clsMainLogic()
+		public DataSet ds;
+        #endregion
+
+        #region constructor
+
+        /// <summary>
+        /// clsMainLogic Constructor
+        /// </summary>
+        public clsMainLogic()
 		{
 			try
 			{
@@ -39,6 +45,7 @@ namespace CS3280_Group_Project.Main
 
         #endregion
 
+        #region logic functions
         /// <summary>
         /// adds invoice to db
         /// </summary>
@@ -107,7 +114,7 @@ namespace CS3280_Group_Project.Main
 			}
 		}
 
-
+        #endregion
     }
 
 }
