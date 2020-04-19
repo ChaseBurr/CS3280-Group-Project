@@ -68,7 +68,9 @@ namespace CS3280_Group_Project.Search
             // invoiceID is set based on the selected cell in the gridrow
             // this window is set as a class member in the main window to allow access to invoiceID
             if (InvoiceDataGrid.SelectedItem != null) {
-                logic.setInvoiceID(InvoiceDataGrid.SelectedCells[0].ToString());
+                DataRowView rowview = InvoiceDataGrid.SelectedItem as DataRowView;
+                string invoiceID = rowview.Row[0].ToString();
+                logic.setInvoiceID(invoiceID);
                 this.Close();
             }
             
