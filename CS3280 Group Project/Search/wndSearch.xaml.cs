@@ -15,6 +15,7 @@ using CS3280_Group_Project;
 using CS3280_Group_Project.Items;
 using CS3280_Group_Project.Search;
 using System.Data;
+using System.Reflection;
 
 namespace CS3280_Group_Project.Search
 {
@@ -39,9 +40,13 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         public wndSearch()
         {
-            InitializeComponent();
-            PopulateDropdowns();
-            PopulateDataGrid();
+            try {
+                InitializeComponent();
+                PopulateDropdowns();
+                PopulateDataGrid();
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
 
         }
         #endregion
@@ -53,10 +58,13 @@ namespace CS3280_Group_Project.Search
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ClearButton_Click(object sender, RoutedEventArgs e) {
-            InvoiceNumber.SelectedItem = null;
-            InvoiceDate.SelectedItem = null;
-            InvoiceCharge.SelectedItem = null;
-            
+            try {
+                InvoiceNumber.SelectedItem = null;
+                InvoiceDate.SelectedItem = null;
+                InvoiceCharge.SelectedItem = null;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -65,15 +73,18 @@ namespace CS3280_Group_Project.Search
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SelectButton_Click(object sender, RoutedEventArgs e) {
-            // invoiceID is set based on the selected cell in the gridrow
-            // this window is set as a class member in the main window to allow access to invoiceID
-            if (InvoiceDataGrid.SelectedItem != null) {
-                DataRowView rowview = InvoiceDataGrid.SelectedItem as DataRowView;
-                string invoiceID = rowview.Row[0].ToString();
-                logic.setInvoiceID(invoiceID);
-                this.Close();
+            try {
+                // invoiceID is set based on the selected cell in the gridrow
+                // this window is set as a class member in the main window to allow access to invoiceID
+                if (InvoiceDataGrid.SelectedItem != null) {
+                    DataRowView rowview = InvoiceDataGrid.SelectedItem as DataRowView;
+                    string invoiceID = rowview.Row[0].ToString();
+                    logic.setInvoiceID(invoiceID);
+                    this.Close();
+                }
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-            
         }
         #endregion
 
@@ -82,25 +93,31 @@ namespace CS3280_Group_Project.Search
         /// Populate dropdowns based on info queried in clsMainSQL.cs
         /// </summary>
         private void PopulateDropdowns() {
-            InvoiceNumber.ItemsSource = logic.invoiceNumbers;
-            InvoiceDate.ItemsSource = logic.invoiceDates;
-            InvoiceCharge.ItemsSource = logic.invoiceCosts;
+            try {
+                InvoiceNumber.ItemsSource = logic.invoiceNumbers;
+                InvoiceDate.ItemsSource = logic.invoiceDates;
+                InvoiceCharge.ItemsSource = logic.invoiceCosts;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
         /// Populate datagrid based on info queried in clsMainSQL.cs
         /// </summary>
         private void PopulateDataGrid() {
-            // get selections and pass to query builder in logic
-            string invoiceNum = InvoiceNumber.SelectedItem as string;
-            string invoiceDate = InvoiceDate.SelectedItem as string;
-            string invoiceCharge = InvoiceCharge.SelectedItem as string;
-            logic.BuildQueryFromSelections(invoiceNum, invoiceDate, invoiceCharge);
-            // update data grid
-            InvoiceDataGrid.AutoGenerateColumns = true;
-            InvoiceDataGrid.DataContext = logic.dataSetInvoiceList.Tables[0].DefaultView;
-
-            
+            try {
+                // get selections and pass to query builder in logic
+                string invoiceNum = InvoiceNumber.SelectedItem as string;
+                string invoiceDate = InvoiceDate.SelectedItem as string;
+                string invoiceCharge = InvoiceCharge.SelectedItem as string;
+                logic.BuildQueryFromSelections(invoiceNum, invoiceDate, invoiceCharge);
+                // update data grid
+                InvoiceDataGrid.AutoGenerateColumns = true;
+                InvoiceDataGrid.DataContext = logic.dataSetInvoiceList.Tables[0].DefaultView;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -109,7 +126,11 @@ namespace CS3280_Group_Project.Search
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void InvoiceInfo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            PopulateDataGrid();
+            try {
+                PopulateDataGrid();
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         #endregion

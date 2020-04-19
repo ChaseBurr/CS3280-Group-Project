@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,9 +50,13 @@ namespace CS3280_Group_Project.Search
         /// Constructor populates initial invoice view
         /// </summary>
         public clsSearchLogic() {
-            PopulateInvoiceList();
-            dataSetInvoiceList = searchSQL.GetFullInvoiceList();
-            invoiceID = "none";
+            try {
+                PopulateInvoiceList();
+                dataSetInvoiceList = searchSQL.GetFullInvoiceList();
+                invoiceID = "none";
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         #endregion
 
@@ -61,7 +66,11 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         /// <param name="invoiceID"></param>
         public void setInvoiceID(string invoiceID) {
-            this.invoiceID = invoiceID;
+            try {
+                this.invoiceID = invoiceID;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         #endregion
 
@@ -70,20 +79,24 @@ namespace CS3280_Group_Project.Search
         /// Populate lists to be used as ItemsSource for dropdowns
         /// </summary>
         public void PopulateInvoiceList() {
-            // add sorted invoice numbers to list
-            DataTable table = searchSQL.GetSortedInvoiceNums().Tables[0];
-            foreach (DataRow row in table.Rows) {
-                invoiceNumbers.Add(row.ItemArray[0].ToString());
-            }
-            // add sorted costs to list
-            table = searchSQL.GetSortedCosts().Tables[0];
-            foreach (DataRow row in table.Rows) {
-                invoiceCosts.Add("$" + row.ItemArray[0].ToString());
-            }
-            // add sorted dates to list
-            table = searchSQL.GetSortedDates().Tables[0];
-            foreach (DataRow row in table.Rows) {
-                invoiceDates.Add(row.ItemArray[0].ToString());
+            try {
+                // add sorted invoice numbers to list
+                DataTable table = searchSQL.GetSortedInvoiceNums().Tables[0];
+                foreach (DataRow row in table.Rows) {
+                    invoiceNumbers.Add(row.ItemArray[0].ToString());
+                }
+                // add sorted costs to list
+                table = searchSQL.GetSortedCosts().Tables[0];
+                foreach (DataRow row in table.Rows) {
+                    invoiceCosts.Add("$" + row.ItemArray[0].ToString());
+                }
+                // add sorted dates to list
+                table = searchSQL.GetSortedDates().Tables[0];
+                foreach (DataRow row in table.Rows) {
+                    invoiceDates.Add(row.ItemArray[0].ToString());
+                }
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
         #endregion
@@ -96,28 +109,32 @@ namespace CS3280_Group_Project.Search
         /// <param name="invoiceDate"></param>
         /// <param name="invoiceCharge"></param>
         public void BuildQueryFromSelections(string invoiceNum, string invoiceDate, string invoiceCharge) {
-            string query = "SELECT * FROM INVOICES";
-            // invoice num selected
-            if (invoiceNum != null) {
-                query += " WHERE InvoiceNum = " + invoiceNum;
-            }
-            if (invoiceDate != null) {
+            try {
+                string query = "SELECT * FROM INVOICES";
+                // invoice num selected
                 if (invoiceNum != null) {
-                    // CONVERT(DATETIME, YourColumn, 101)
-                    query += " AND InvoiceDate = #" + invoiceDate.Substring(0, 9) + "#";
-                } else {
-                    query += " WHERE InvoiceDate = #" + invoiceDate.Substring(0, 9) + "#";
+                    query += " WHERE InvoiceNum = " + invoiceNum;
                 }
-            }
-            if (invoiceCharge != null) {
-                if (invoiceNum != null || invoiceDate != null) {
-                    query += " AND TotalCost = " + invoiceCharge.Substring(1, invoiceCharge.Length - 1);
-                } else {
-                    query += " WHERE TotalCost = " + invoiceCharge.Substring(1, invoiceCharge.Length - 1);
+                if (invoiceDate != null) {
+                    if (invoiceNum != null) {
+                        // CONVERT(DATETIME, YourColumn, 101)
+                        query += " AND InvoiceDate = #" + invoiceDate.Substring(0, 9) + "#";
+                    } else {
+                        query += " WHERE InvoiceDate = #" + invoiceDate.Substring(0, 9) + "#";
+                    }
                 }
+                if (invoiceCharge != null) {
+                    if (invoiceNum != null || invoiceDate != null) {
+                        query += " AND TotalCost = " + invoiceCharge.Substring(1, invoiceCharge.Length - 1);
+                    } else {
+                        query += " WHERE TotalCost = " + invoiceCharge.Substring(1, invoiceCharge.Length - 1);
+                    }
+                }
+                Console.WriteLine(query);
+                dataSetInvoiceList = searchSQL.GetLimitedInvoiceList(query);
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-            Console.WriteLine(query);
-            dataSetInvoiceList = searchSQL.GetLimitedInvoiceList(query);
         }
         #endregion
     }

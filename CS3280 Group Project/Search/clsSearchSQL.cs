@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using System.Reflection;
 
 namespace CS3280_Group_Project.Search
 {
@@ -27,8 +28,12 @@ namespace CS3280_Group_Project.Search
         /// Constructor for clsSearchSQL
         /// </summary>
         public clsSearchSQL() {
-            // access to data
-            dataAccess = new clsDataAccess();
+            try {
+                // access to data
+                dataAccess = new clsDataAccess();
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         #endregion
 
@@ -38,10 +43,14 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         /// <returns></returns>
         public DataSet GetSortedCosts() {
-            int numInvoices = 0;
-            // get ordered costs
-            dataSet = dataAccess.ExecuteSQLStatement("SELECT TotalCost FROM Invoices ORDER BY TotalCost", ref numInvoices);
-            return dataSet;
+            try {
+                int numInvoices = 0;
+                // get ordered costs
+                dataSet = dataAccess.ExecuteSQLStatement("SELECT TotalCost FROM Invoices ORDER BY TotalCost", ref numInvoices);
+                return dataSet;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -49,10 +58,14 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         /// <returns></returns>
         public DataSet GetSortedDates() {
-            int numInvoices = 0;
-            // get ordered dates
-            dataSet = dataAccess.ExecuteSQLStatement("SELECT InvoiceDate FROM Invoices ORDER BY InvoiceDate", ref numInvoices);
-            return dataSet;
+            try {
+                int numInvoices = 0;
+                // get ordered dates
+                dataSet = dataAccess.ExecuteSQLStatement("SELECT InvoiceDate FROM Invoices ORDER BY InvoiceDate", ref numInvoices);
+                return dataSet;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -60,10 +73,14 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         /// <returns></returns>
         public DataSet GetSortedInvoiceNums() {
-            int numInvoices = 0;
-            // get ordered invoice numbers
-            dataSet = dataAccess.ExecuteSQLStatement("SELECT InvoiceNum FROM Invoices ORDER BY InvoiceNum", ref numInvoices);
-            return dataSet;
+            try {
+                int numInvoices = 0;
+                // get ordered invoice numbers
+                dataSet = dataAccess.ExecuteSQLStatement("SELECT InvoiceNum FROM Invoices ORDER BY InvoiceNum", ref numInvoices);
+                return dataSet;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         #endregion
 
@@ -73,9 +90,13 @@ namespace CS3280_Group_Project.Search
         /// </summary>
         /// <returns></returns>
         public DataSet GetFullInvoiceList() {
-            int numInvoices = 0;
-            dataSet = dataAccess.ExecuteSQLStatement("SELECT * FROM Invoices", ref numInvoices);
-            return dataSet;
+            try {
+                int numInvoices = 0;
+                dataSet = dataAccess.ExecuteSQLStatement("SELECT * FROM Invoices", ref numInvoices);
+                return dataSet;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -84,9 +105,13 @@ namespace CS3280_Group_Project.Search
         /// <param name="query"></param>
         /// <returns></returns>
         public DataSet GetLimitedInvoiceList(string query) {
-            int numInvoices = 0; ;
-            dataSet = dataAccess.ExecuteSQLStatement(query, ref numInvoices);
-            return dataSet;
+            try {
+                int numInvoices = 0; ;
+                dataSet = dataAccess.ExecuteSQLStatement(query, ref numInvoices);
+                return dataSet;
+            } catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + " " + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         #endregion
 
