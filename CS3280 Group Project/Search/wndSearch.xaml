@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280_Group_Project.Search"
         mc:Ignorable="d"
-        Title="wndSearch" Height="450" Width="800">
+        Title="wndSearch" Height="450" Width="800" Background="#FF71777C">
 
     <Grid>
         <Button Content="Clear Selection" HorizontalAlignment="Left" Margin="35,267,0,0" VerticalAlignment="Top" Width="155" Height="42" FontSize="16" FontWeight="Bold" Click="ClearButton_Click"/>
